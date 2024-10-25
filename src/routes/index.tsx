@@ -1,8 +1,8 @@
 import { HashRouter, Route, Routes } from "react-router-dom";
 import Home from "../pages/home";
 import LoginPage from "../pages/login";
-import ProfilePage from "../pages/profile/inex";
-import CreatePage from "../pages/create";
+import ProfilePage from "../pages/profile";
+import Membership from "../pages/membership";
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
           <Route path={"/profile"} element={<ProfilePage />} />
         </Route>
         <Route path={"/login"} element={<LoginPage />} />
-        <Route path={"/create"} element={<CreatePage />} />
+        <Route path={"/membership"} element={<Membership />} />
       </Routes>
     </HashRouter>
   );
