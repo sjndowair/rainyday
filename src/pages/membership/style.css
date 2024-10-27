@@ -1,8 +1,22 @@
 @keyframes fall {
-  0% {
-    transform: translateY(-10%);
-  }
-  100% {
+  to {
     transform: translateY(100vh);
   }
+}
+
+.fall {
+  animation: fall linear infinite;
+}
+
+#raindrop {
+  position: absolute;
+  top: -10px;
+  width: 2px;
+  height: 10px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0.5)
+  );
+  animation: fall linear infinite;
 }
