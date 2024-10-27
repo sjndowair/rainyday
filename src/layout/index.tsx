@@ -3,15 +3,17 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 
 interface ILayout {
-  chirdren?: JSX.Element | string | number | ReactNode;
+  children?: JSX.Element | string | number | ReactNode;
 }
 
-export const Layout = ({ chirdren }: ILayout) => {
+const Layout = ({ children }: ILayout) => {
   return (
     <>
       <Header />
-      <main>{chirdren}</main>
+      <main className="bg-slate-900 text-neutral-50">{children}</main>
       <Footer />
     </>
   );
 };
+
+export default Layout;
