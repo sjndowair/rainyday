@@ -4,7 +4,6 @@ import Button from "../../atoms/button";
 import InputBox from "../../components/inputBox";
 import RadioBox from "../../components/radioBox";
 import Error from "../../atoms/error";
-import "./style.css";
 import MembershipInnerContain from "../../components/membershipInnerContain";
 import { useState } from "react";
 
@@ -18,22 +17,9 @@ export default function Membership() {
   return (
     <Layout>
       {isError ? <Error /> : null}
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-700 to-gray-900 p-4">
-        {[...Array(20)].map((_, i) => (
-          <div
-            id="raindrop"
-            key={i}
-            className="absolute top-[-4rem] w-[2px] h-[10px] rounded-full "
-            style={{
-              left: `${Math.random() * 100}%`,
-              animation: `fall ${1 + Math.random() * 1 + 0.5}s linear infinite`,
-              animationDelay: `${Math.random() * 1 + 0.5}s`,
-            }}
-          />
-        ))}
-        <div className="relative max-w-md w-full bg-gray-800 rounded-lg shadow-xl overflow-hidden ">
-          <div className="absolute inset-0 opacity-20"></div>
-
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900 text-gray-200">
+        <div className="relative max-w-md w-full bg-gray-800 rounded-lg shadow-xl ">
+          <div className="absolute inset-0 opacity-20" />
           <MembershipInnerContain>
             <Form>
               <InputBox

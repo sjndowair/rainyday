@@ -1,16 +1,35 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import Header from "../components/header";
 import Footer from "../components/footer";
+import "./style.css";
 
 interface ILayout {
   children?: JSX.Element | string | number | ReactNode;
 }
 
 const Layout = ({ children }: ILayout) => {
+  useEffect(() => {
+    const isCreateRainDropEffect = () => {
+      const isRainDrop = document.createElement("div");
+      isRainDrop.classList.add("rainDrop");
+      isRainDrop.style.left = `${Math.random() * 100}%`;
+      isRainDrop.style.animationDuration = `${Math.random() * 1 + 0.5}s`;
+      document.getElementById("rain-container")?.appendChild(isRainDrop);
+      setTimeout(() => isRainDrop.remove(), 2000);
+    };
+    const isRemoveRainDropEffect = setInterval(isCreateRainDropEffect, 50);
+    return () => clearInterval(isRemoveRainDropEffect);
+  }, []);
   return (
     <>
       <Header />
-      <main className="bg-slate-900 text-neutral-50">{children}</main>
+      <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900 text-gray-200">
+        <div
+          id="rain-container"
+          className="fixed inset-0 pointer-events-none "
+        />
+        <main>{children}</main>
+      </div>
       <Footer />
     </>
   );
