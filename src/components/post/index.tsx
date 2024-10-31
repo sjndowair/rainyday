@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ILoadingProps } from "../../types/mainHomepage";
 import { POST_DUMMY_DATA } from "../../dummy/dummy-data";
 import {
   Heart,
@@ -8,7 +9,7 @@ import {
   MoreHorizontal,
 } from "lucide-react";
 
-const Post = () => {
+const Post = ({ isLoading }: ILoadingProps) => {
   const [isLikedPosts, setIsLikedPosts] = useState<Set<number>>(new Set());
   const [isBookMark, setIsBookMark] = useState<Set<number>>(new Set());
 
@@ -29,70 +30,91 @@ const Post = () => {
   };
   return (
     <div className="space-y-6">
-      {POST_DUMMY_DATA.map((e) => (
-        <div
-          key={e.id}
-          className="bg-gray-800 bg-opacity-50 rounded-lg overflow-hidden backdrop-blur-sm transition-all hover:bg-opacity-70"
-        >
-          <div className="p-4 flex items-center">
-            <img
-              src={e.avatar}
-              alt={e.username}
-              className="w-10 h-10 rounded-full mr-3"
-            />
-            <div>
-              <span className="font-semibold">{e.username}</span>
-              <p className="text-xs text-gray-400">Wearing: {e.outfit}</p>
+      {!isLoading ? (
+        Array.from({ length: 2 }).map((_, index) => (
+          <div
+            key={index}
+            className="bg-gray-800 bg-opacity-50 rounded-lg overflow-hidden backdrop-blur-sm"
+          >
+            <div className="p-4 flex items-center">
+              <div className="w-10 h-10 rounded-full bg-gray-600 animate-pulse mr-3"></div>
+              <div className="w-24 h-4 bg-gray-600 animate-pulse rounded"></div>
             </div>
-            <button className="ml-auto focus:outline-none">
-              <MoreHorizontal className="h-5 w-5" />
-            </button>
+            <div className="w-full h-48 bg-gray-600 animate-pulse"></div>
+            <div className="p-4">
+              <div className="w-full h-4 bg-gray-600 animate-pulse rounded mb-2"></div>
+              <div className="w-2/3 h-4 bg-gray-600 animate-pulse rounded"></div>
+            </div>
           </div>
-          {e.image && (
-            <img src={e.image} alt="Post content" className="w-full" />
-          )}
-          <div className="p-4">
-            <p className="mb-4">{e.content}</p>
-            <div className="flex justify-between mb-2">
-              <div className="flex space-x-4">
-                <button
-                  onClick={() => isToggleLiked(e.id)}
-                  className="flex items-center space-x-1 focus:outline-none group"
-                >
-                  <Heart
-                    className={`h-5 w-5 ${
-                      isLikedPosts.has(e.id)
-                        ? "text-red-500 fill-current"
-                        : "group-hover:text-red-500 transition-colors"
-                    }`}
-                  />
-                  <span>{e.likes}</span>
-                </button>
-                <button className="flex items-center space-x-1 focus:outline-none group">
-                  <MessageCircle className="h-5 w-5 group-hover:text-blue-400 transition-colors" />
-                  <span>{e.comments}</span>
-                </button>
-                <button className="flex items-center space-x-1 focus:outline-none group">
-                  <Share2 className="h-5 w-5 group-hover:text-green-400 transition-colors" />
-                  <span>{e.shares}</span>
+        ))
+      ) : (
+        <>
+          {POST_DUMMY_DATA.map((e) => (
+            <div
+              key={e.id}
+              className="bg-gray-800 bg-opacity-50 rounded-lg overflow-hidden backdrop-blur-sm transition-all hover:bg-opacity-70"
+            >
+              <div className="p-4 flex items-center">
+                <img
+                  src={e.avatar}
+                  alt={e.username}
+                  className="w-10 h-10 rounded-full mr-3"
+                />
+                <div>
+                  <span className="font-semibold">{e.username}</span>
+                  <p className="text-xs text-gray-400">Wearing: {e.outfit}</p>
+                </div>
+                <button className="ml-auto focus:outline-none">
+                  <MoreHorizontal className="h-5 w-5" />
                 </button>
               </div>
-              <button
-                onClick={() => isToggleBookMark(e.id)}
-                className="focus:outline-none"
-              >
-                <Bookmark
-                  className={`h-5 w-5 ${
-                    isBookMark.has(e.id)
-                      ? "text-yellow-500 fill-current"
-                      : "hover:text-yellow-500 transition-colors"
-                  }`}
-                />
-              </button>
+              {e.image && (
+                <img src={e.image} alt="Post content" className="w-full" />
+              )}
+              <div className="p-4">
+                <p className="mb-4">{e.content}</p>
+                <div className="flex justify-between mb-2">
+                  <div className="flex space-x-4">
+                    <button
+                      onClick={() => isToggleLiked(e.id)}
+                      className="flex items-center space-x-1 focus:outline-none group"
+                    >
+                      <Heart
+                        className={`h-5 w-5 ${
+                          isLikedPosts.has(e.id)
+                            ? "text-red-500 fill-current"
+                            : "group-hover:text-red-500 transition-colors"
+                        }`}
+                      />
+                      <span>{e.likes}</span>
+                    </button>
+                    <button className="flex items-center space-x-1 focus:outline-none group">
+                      <MessageCircle className="h-5 w-5 group-hover:text-blue-400 transition-colors" />
+                      <span>{e.comments}</span>
+                    </button>
+                    <button className="flex items-center space-x-1 focus:outline-none group">
+                      <Share2 className="h-5 w-5 group-hover:text-green-400 transition-colors" />
+                      <span>{e.shares}</span>
+                    </button>
+                  </div>
+                  <button
+                    onClick={() => isToggleBookMark(e.id)}
+                    className="focus:outline-none"
+                  >
+                    <Bookmark
+                      className={`h-5 w-5 ${
+                        isBookMark.has(e.id)
+                          ? "text-yellow-500 fill-current"
+                          : "hover:text-yellow-500 transition-colors"
+                      }`}
+                    />
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      ))}
+          ))}{" "}
+        </>
+      )}
     </div>
   );
 };
