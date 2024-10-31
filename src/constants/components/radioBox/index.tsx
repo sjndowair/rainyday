@@ -2,12 +2,7 @@ import Input from "../../../atoms/input";
 import Label from "../../../atoms/label";
 import { ILabelProps } from "../../../types/create-membership";
 import { InputHTMLAttributes } from "react";
-
-export interface IRadioBoxProps
-  extends ILabelProps,
-    InputHTMLAttributes<HTMLInputElement> {
-  label: string;
-}
+import { IRadioBoxProps } from "../../../types/mainHomepage";
 
 const RadioBox = ({ type, name, value }: IRadioBoxProps) => {
   return (
