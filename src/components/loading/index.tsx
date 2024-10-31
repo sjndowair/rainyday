@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import RainEffect from "./rain";
-import "./rain/style.css";
+import RainEffect from "./Effect";
+import "./Effect/style.css";
 
 const Loading = () => {
   const [isRaindrops, setIsRaindrops] = useState<number[]>([]);
@@ -10,7 +10,7 @@ const Loading = () => {
   }, []);
 
   return (
-    <div className="relative flex items-center justify-center min-h-screen bg-gray-900 overflow-hidden">
+    <div className="relative flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-700 to-gray-900 overflow-hidden">
       {isRaindrops.map((_, i) => (
         <RainEffect key={i} delay={Math.random() * 1.5} />
       ))}
