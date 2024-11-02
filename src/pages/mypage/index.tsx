@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Umbrella,
   Cloud,
@@ -12,42 +12,7 @@ import {
   Settings,
   LogOut,
 } from "lucide-react";
-
-interface Post {
-  id: number;
-  content: string;
-  image?: string;
-  outfit: string;
-  likes: number;
-  comments: number;
-  shares: number;
-  date: string;
-}
-
-const userPosts: Post[] = [
-  {
-    id: 1,
-    content:
-      "Enjoying a cozy day indoors with my favorite book and a warm cup of tea. Perfect rainy day activity! #RainyDayReads",
-    image: "/placeholder.svg?height=300&width=400",
-    outfit: "Comfy sweater and fuzzy socks",
-    likes: 89,
-    comments: 12,
-    shares: 3,
-    date: "2 hours ago",
-  },
-  {
-    id: 2,
-    content:
-      "Just got these amazing new rain boots! Can't wait to test them out in the puddles. #RainyDayFashion",
-    image: "/placeholder.svg?height=300&width=400",
-    outfit: "Yellow rain boots and matching raincoat",
-    likes: 156,
-    comments: 24,
-    shares: 7,
-    date: "1 day ago",
-  },
-];
+import { MYPAGE_DUMMY_DATA } from "../../dummy/dummy-data";
 
 export default function MyPage() {
   const [weatherMood, setWeatherMood] = useState("☁️ Cloudy");
@@ -154,7 +119,7 @@ export default function MyPage() {
 
         {/* User Posts */}
         <div className="space-y-6">
-          {userPosts.map((post) => (
+          {MYPAGE_DUMMY_DATA.map((post) => (
             <div
               key={post.id}
               className="bg-gray-800 bg-opacity-50 rounded-lg overflow-hidden backdrop-blur-sm transition-all hover:bg-opacity-70"
