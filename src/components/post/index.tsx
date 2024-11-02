@@ -8,6 +8,7 @@ import {
   MessageCircle,
   MoreHorizontal,
 } from "lucide-react";
+import SkeletonPost from "../../loading/skeleton/skeletonPost";
 
 const Post = ({ isLoading }: ILoadingProps) => {
   const [isLikedPosts, setIsLikedPosts] = useState<Set<number>>(new Set());
@@ -31,22 +32,7 @@ const Post = ({ isLoading }: ILoadingProps) => {
   return (
     <div className="space-y-6">
       {!isLoading ? (
-        Array.from({ length: 2 }).map((_, index) => (
-          <div
-            key={index}
-            className="bg-gray-800 bg-opacity-50 rounded-lg overflow-hidden backdrop-blur-sm"
-          >
-            <div className="p-4 flex items-center">
-              <div className="w-10 h-10 rounded-full bg-gray-600 animate-pulse mr-3"></div>
-              <div className="w-24 h-4 bg-gray-600 animate-pulse rounded"></div>
-            </div>
-            <div className="w-full h-48 bg-gray-600 animate-pulse"></div>
-            <div className="p-4">
-              <div className="w-full h-4 bg-gray-600 animate-pulse rounded mb-2"></div>
-              <div className="w-2/3 h-4 bg-gray-600 animate-pulse rounded"></div>
-            </div>
-          </div>
-        ))
+        <SkeletonPost />
       ) : (
         <>
           {POST_DUMMY_DATA.map((e) => (

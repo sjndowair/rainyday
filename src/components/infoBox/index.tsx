@@ -1,13 +1,12 @@
 import { ILoadingProps } from "../../types/mainHomepage";
-
+import SkeletonInfoBox from "../../loading/skeleton/skeletonInfoBox";
 import { Cloud } from "lucide-react";
 
 const InfoBox = ({ isLoading }: ILoadingProps) => {
-  // const WHETHE_API = process.env.
   return (
     <>
       {!isLoading ? (
-        <div className="w-full h-[4rem] bg-gray-600 animate-pulse rounded " />
+        <SkeletonInfoBox />
       ) : (
         <div className="mb-6 bg-blue-900 bg-opacity-30 rounded-lg p-4 flex items-center justify-between h-[4rem]">
           <div className="flex items-center">
