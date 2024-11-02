@@ -1,4 +1,5 @@
 import { IMainHomePostProps, IMainHomeStoryProps } from "../types/mainHomepage";
+import { IMyPageProps } from "../types/create-mypage";
 
 export const STORY_DUMMY_DATA: IMainHomeStoryProps[] = [
   {
@@ -50,5 +51,30 @@ export const POST_DUMMY_DATA: IMainHomePostProps[] = [
     likes: 45,
     comments: 8,
     shares: 2,
+  },
+];
+
+export const MYPAGE_DUMMY_DATA: IMyPageProps[] = [
+  {
+    id: 1,
+    content:
+      "Enjoying a cozy day indoors with my favorite book and a warm cup of tea. Perfect rainy day activity! #RainyDayReads",
+    image: "/placeholder.svg?height=300&width=400",
+    outfit: "Comfy sweater and fuzzy socks",
+    likes: 89,
+    comments: 12,
+    shares: 3,
+    date: "2 hours ago",
+  },
+  {
+    id: 2,
+    content:
+      "Just got these amazing new rain boots! Can't wait to test them out in the puddles. #RainyDayFashion",
+    image: "/placeholder.svg?height=300&width=400",
+    outfit: "Yellow rain boots and matching raincoat",
+    likes: 156,
+    comments: 24,
+    shares: 7,
+    date: "1 day ago",
   },
 ];
