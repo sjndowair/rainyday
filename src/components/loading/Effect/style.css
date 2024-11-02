@@ -1,8 +1,0 @@
-@keyframes fall {
-  0% {
-    transform: translateY(-10%);
-  }
-  100% {
-    transform: translateY(100vh);
-  }
-}
