@@ -21,3 +21,7 @@ export interface IRadioBoxProps
     InputHTMLAttributes<HTMLInputElement> {
   label: string;
 }
+
+export interface ILoadingProps {
+  isLoading?: boolean;
+}
