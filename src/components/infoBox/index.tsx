@@ -1,8 +1,20 @@
 import { ILoadingProps } from "../../types/mainHomepage";
 import SkeletonInfoBox from "../../loading/skeleton/skeletonInfoBox";
 import { Cloud } from "lucide-react";
+import { useEffect } from "react";
+import { getWeatherList } from "../../apis/getWeatherApi";
 
 const InfoBox = ({ isLoading }: ILoadingProps) => {
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      let latitube = position.coords.latitude;
+      let longtitube = position.coords.longitude;
+      getWeatherList(latitube, longtitube);
+    });
+  }, []);
+
+  console.log(getWeatherList);
+
   return (
     <>
       {!isLoading ? (
