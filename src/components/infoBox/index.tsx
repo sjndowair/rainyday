@@ -1,23 +1,39 @@
-import { ILoadingProps } from "../../types/mainHomepage";
-import SkeletonInfoBox from "../../loading/skeleton/skeletonInfoBox";
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+
 import { Cloud } from "lucide-react";
-import { useEffect } from "react";
+
+import SkeletonInfoBox from "../../loading/skeleton/skeletonInfoBox";
 import { getWeatherList } from "../../apis/getWeatherApi";
 
-const InfoBox = ({ isLoading }: ILoadingProps) => {
+const InfoBox = () => {
+  const [isLatitube, setIsLatitube] = useState<number | "">();
+  const [isLongtitube, setIsLongtitube] = useState<number | "">();
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
-      let latitube = position.coords.latitude;
-      let longtitube = position.coords.longitude;
-      getWeatherList(latitube, longtitube);
+      setIsLatitube(position.coords.latitude);
+      setIsLongtitube(position.coords.longitude);
     });
   }, []);
 
-  console.log(getWeatherList);
+  const {
+    data: weatherData,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["weatherData", isLatitube, isLongtitube],
+    queryFn: () => getWeatherList(isLatitube!, isLongtitube!),
+  });
+
+  if (error) return <div>시발진짜 ㅈ같아서 못해먹겠네</div>;
+
+  console.log(weatherData);
+  console.log(isLatitube, isLongtitube);
 
   return (
     <>
-      {!isLoading ? (
+      {isLoading ? (
         <SkeletonInfoBox />
       ) : (
         <div className="mb-6 bg-blue-900 bg-opacity-30 rounded-lg p-4 flex items-center justify-between h-[4rem]">
