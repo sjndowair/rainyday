@@ -16,7 +16,7 @@ const Profile = () => {
   return (
     <>
       <main className="max-w-screen-xl mx-auto p-8 flex flex-col gap-10">
-        <InfoBox isLoading={isLoading} />
+        <InfoBox />
         <StoryBox isLoading={isLoading} />
         <Post isLoading={isLoading} />
       </main>
