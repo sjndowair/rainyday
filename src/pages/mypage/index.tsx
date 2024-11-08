@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import {
   Umbrella,
@@ -12,10 +13,13 @@ import {
   Settings,
   LogOut,
 } from "lucide-react";
+import {useNavigate} from "react-router-dom";
 import { MYPAGE_DUMMY_DATA } from "../../dummy/dummy-data";
 
 export default function MyPage() {
   const [weatherMood, setWeatherMood] = useState("☁️ Cloudy");
+
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900 text-gray-200">
@@ -27,7 +31,7 @@ export default function MyPage() {
       {/* Header */}
       <header className="sticky top-0 z-40 bg-gray-900 bg-opacity-80 backdrop-blur-md p-4 shadow-lg">
         <div className="max-w-screen-xl mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold flex items-center">
+          <h1 onClick={() => navigate("/profile")} className="text-2xl font-bold flex items-center hover:cursor-pointer">
             <Umbrella className="mr-2" />
             RainyDaySocial
           </h1>
@@ -38,7 +42,7 @@ export default function MyPage() {
             <button className="hover:text-blue-400 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-full p-1">
               <Settings className="h-6 w-6" />
             </button>
-            <button className="hover:text-blue-400 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-full p-1">
+            <button onClick={() => navigate("/profile")} className="hover:text-blue-400 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-full p-1">
               <LogOut className="h-6 w-6" />
             </button>
           </nav>
