@@ -1,35 +1,36 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-
 import { Cloud } from "lucide-react";
-
 import SkeletonInfoBox from "../../loading/skeleton/skeletonInfoBox";
 import { getWeatherList } from "../../apis/getWeatherApi";
+import {weatherIcon} from "../../apis/getWeatherApi";
+import {weatherGenres} from "../../utils/weather.Util";
+
+
 
 const InfoBox = () => {
-  const [isLatitube, setIsLatitube] = useState<number | "">();
-  const [isLongtitube, setIsLongtitube] = useState<number | "">();
+  const [isLatitube, setIsLatitube] = useState<number >();
+  const [isLongtitube, setIsLongtitube] = useState<number>();
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["weatherData", isLatitube, isLongtitube],
+    queryFn: () => getWeatherList(isLatitube!, isLongtitube!),
+    enabled: isLatitube !== undefined && isLongtitube !== undefined
+  });
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
       setIsLatitube(position.coords.latitude);
       setIsLongtitube(position.coords.longitude);
-    });
+    })
   }, []);
 
-  const {
-    data: weatherData,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["weatherData", isLatitube, isLongtitube],
-    queryFn: () => getWeatherList(isLatitube!, isLongtitube!),
-  });
+  const iconData = data?.weather?.[0]?.icon!
 
-  if (error) return <div>시발진짜 ㅈ같아서 못해먹겠네</div>;
+  const isIconUrl = () => {
+    if(iconData) return weatherIcon({iconData});
+  }
 
-  console.log(weatherData);
-  console.log(isLatitube, isLongtitube);
 
   return (
     <>
@@ -37,13 +38,18 @@ const InfoBox = () => {
         <SkeletonInfoBox />
       ) : (
         <div className="mb-6 bg-blue-900 bg-opacity-30 rounded-lg p-4 flex items-center justify-between h-[4rem]">
-          <div className="flex items-center">
+          <div className="flex gap-2 items-center">
             <Cloud className="h-8 w-8 mr-2 text-blue-300" />
+            <img src={isIconUrl()} />
             <span className="text-lg font-semibold">
-              Rainy day ahead! Don't forget your umbrella.
-            </span>
+             {data?.name}
+            </span  >
+            {data?.weather?.map((e, i) => (
+                <span className="text-lg font-semibold" key={i}>{weatherGenres[e.id]}</span>
+            ))}
+
           </div>
-          <div className="text-sm">12°C | 90% chance of rain</div>
+          <div className="text-sm">{data?.main?.temp}°C | Real-time Weather</div>
         </div>
       )}
     </>
