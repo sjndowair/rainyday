@@ -1,24 +1,32 @@
-import { Home, Search, Bell, Mail, User } from "lucide-react";
+import {useState} from "react";
+import { Home, Search, Bell, Mail, User, Settings, MessageCircle } from "lucide-react";
 import {useNavigate} from "react-router-dom";
-import Noti from "../../components/noti"
-
-
+import useStore from "../../store";
 
 const Navigation = () => {
 
+  const [onClickModal, setOnClickModal] = useState(false);
 const navigate = useNavigate();
 
+const isOpenModal = useStore(state => state.isToggleModal);
+
+
   const isNavigationIcon = [
+    {key: "message", icon: <MessageCircle className="h-6 w-6" />, path:"/chat" },
     { key: "home", icon: <Home className="h-6 w-6" />, path:""},
     {
       key: "search",
       icon: <Search className="h-6 w-6"  />,
     },
-    { key: "bell", icon: <Bell className="h-6 w-6" /> },
+    { key: "bell", icon: <Bell className="h-6 w-6"  onClick={isOpenModal}/> },
     { key: "user", icon: <User className="h-6 w-6" />, path:"/mypage"},
+
   ];
+
+
   return (
-    <nav>
+      <>
+    <nav className="relative">
       <ul className="flex space-x-4">
         {isNavigationIcon.map((e, i) => (
           <li key={i}>
@@ -29,8 +37,10 @@ const navigate = useNavigate();
           </li>
         ))}
       </ul>
-      <Noti />
+
     </nav>
+
+      </>
   );
 };
 
