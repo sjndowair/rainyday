@@ -9,15 +9,14 @@ const Home = () => {
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(true);
-    }, 1000);
+    }, 500);
   }, []);
 
   return (
     <>
       <Layout>
         <Outlet />
-        {!isLoading ? <Loading /> : null}
-        <div>main home</div>
+        {!isLoading && <Loading />  }
       </Layout>
     </>
   );
