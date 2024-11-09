@@ -187,22 +187,6 @@ export default function MainPage() {
                     </div>
                 )}
             </div>
-
-            <style>{`
-        .raindrop {
-          position: absolute;
-          top: -10px;
-          width: 2px;
-          height: 10px;
-          background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.5));
-          animation: fall linear infinite;
-        }
-        @keyframes fall {
-          to {
-            transform: translateY(100vh);
-          }
-        }
-      `}</style>
         </div>
     )
 }
