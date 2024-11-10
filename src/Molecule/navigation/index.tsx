@@ -1,7 +1,7 @@
 import {useState} from "react";
 import { Home, Search, Bell, Mail, User, Settings, MessageCircle } from "lucide-react";
 import {useNavigate} from "react-router-dom";
-import useStore from "../../store";
+import {useStore} from "../../store";
 
 const Navigation = () => {
 
@@ -13,7 +13,7 @@ const isOpenModal = useStore(state => state.isToggleModal);
 
   const isNavigationIcon = [
     {key: "message", icon: <MessageCircle className="h-6 w-6" />, path:"/chat" },
-    { key: "home", icon: <Home className="h-6 w-6" />, path:""},
+    { key: "home", icon: <Home className="h-6 w-6" />, path:"/"},
     {
       key: "search",
       icon: <Search className="h-6 w-6"  />,
