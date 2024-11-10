@@ -1,67 +1,19 @@
 
 
-import { useState, useEffect } from 'react'
-import { create } from 'zustand'
-import { Cloud, MessageCircle, Phone, Video, Search, Settings, User, Send } from 'lucide-react'
-
-interface ChatMessage {
-    id: number
-    sender: string
-    content: string
-    timestamp: string
-}
-
-interface ChatState {
-    activeChat: string | null
-    messages: Record<string, ChatMessage[]>
-    setActiveChat: (chat: string | null) => void
-    addMessage: (chat: string, message: ChatMessage) => void
-}
-
-const useChatStore = create<ChatState>((set) => ({
-    activeChat: null,
-    messages: {
-        'Alice': [
-            { id: 1, sender: 'Alice', content: "Hey, hows the weather there?", timestamp: '10:30 AM' },
-{ id: 2, sender: 'You', content: "Its raining cats and dogs!", timestamp: '10:32 AM' },
-],
-    'Bob': [
-    { id: 1, sender: 'Bob', content: 'Want to go for a walk in the rain?', timestamp: '11:15 AM' },
-    { id: 2, sender: 'You', content: 'Sure, let me grab my umbrella!', timestamp: '11:17 AM' },
-],
-},
-
-
-setActiveChat: (chat) => set({ activeChat: chat }),
-    addMessage: (chat, message) => set((state) => ({
-    messages: {
-        ...state.messages,
-        [chat]: [...(state.messages[chat] || []), message],
-    },
-})),
-}))
+import { useState } from 'react'
+import Layout from "../../layout";
+import {useChatStore} from "../../store";
+import { Cloud,  Phone, Video, Search,  User, Send } from 'lucide-react'
 
 
 const contacts = ['Alice', 'Bob', 'Charlie', 'David', 'Eve']
+
 
 export default function MainPage() {
     const { activeChat, messages, setActiveChat, addMessage } = useChatStore()
     const [newMessage, setNewMessage] = useState('')
     const [searchTerm, setSearchTerm] = useState('')
 
-    useEffect(() => {
-        const createRaindrop = () => {
-            const raindrop = document.createElement('div')
-            raindrop.classList.add('raindrop')
-            raindrop.style.left = `${Math.random() * 100}%`
-            raindrop.style.animationDuration = `${Math.random() * 1 + 0.5}s`
-            document.getElementById('rain-container')?.appendChild(raindrop)
-            setTimeout(() => raindrop.remove(), 2000)
-        }
-
-        const rainInterval = setInterval(createRaindrop, 50)
-        return () => clearInterval(rainInterval)
-    }, [])
 
     const filteredContacts = contacts.filter(contact =>
         contact.toLowerCase().includes(searchTerm.toLowerCase())
@@ -80,6 +32,7 @@ export default function MainPage() {
     }
 
     return (
+        <Layout>
         <div className="flex h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 text-white">
             <div id="rain-container" className="fixed inset-0 pointer-events-none"></div>
 
@@ -118,7 +71,7 @@ export default function MainPage() {
             </div>
 
             {/* Main Chat Area */}
-            <div className="flex-1 flex flex-col">
+            <div className=" flex-1 flex flex-col">
                 {activeChat ? (
                     <>
                         {/* Chat Header */}
@@ -188,5 +141,6 @@ export default function MainPage() {
                 )}
             </div>
         </div>
+        </Layout>
     )
 }
