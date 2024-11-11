@@ -78,3 +78,5 @@ export const MYPAGE_DUMMY_DATA: IMyPageProps[] = [
     date: "1 day ago",
   },
 ];
+
+export const CONTANT = ['Alice', 'Bob', 'Charlie', 'David', 'Eve'];

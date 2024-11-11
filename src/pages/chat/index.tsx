@@ -4,9 +4,9 @@ import { useState } from 'react'
 import Layout from "../../layout";
 import {useChatStore} from "../../store";
 import { Cloud,  Phone, Video, Search,  User, Send } from 'lucide-react'
+import {CONTANT} from "../../dummy/dummy-data";
 
 
-const contacts = ['Alice', 'Bob', 'Charlie', 'David', 'Eve']
 
 
 export default function MainPage() {
