@@ -16,7 +16,7 @@ const Noti = ({children}:INotiProps) => {
 
     return (
         <>
-            <div className="rounded-2xl absolute top-[4.5rem] xl:right-[5%] lg:right-[2%] right-[2%] w-[300px] max-w-full bg-gray-800 bg-opacity-50 h-[20rem] hover:bg-opacity-70 focus:bg-opacity-70 ">
+            <div className="z-[9999] rounded-2xl absolute top-[4.5rem] xl:right-[5%] lg:right-[2%] right-[2%] w-[300px] max-w-full bg-gray-800 bg-opacity-50 h-[20rem] hover:bg-opacity-70 focus:bg-opacity-70 ">
         <button className="float-right pr-2 pt-2"  onClick={isCloseModal}><CircleX /></button>
                 <ul>
                     {children}
