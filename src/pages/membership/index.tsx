@@ -1,3 +1,9 @@
+import { useState } from "react";
+
+//fire base
+import {auth, db, USER_COLLECTION} from "../../constants/firebase-contants";
+
+//atoms
 import Layout from "../../layout";
 import Form from "../../atoms/form";
 import Button from "../../atoms/button";
@@ -5,9 +11,9 @@ import InputBox from "../../components/inputBox";
 import RadioBox from "../../components/radioBox";
 import Error from "../../atoms/error";
 import MembershipInnerContain from "../../components/membershipInnerContain";
-import { useState } from "react";
 
-export default function Membership() {
+
+const Membership = () => {
   const [isError, setIsError] = useState<boolean>(false);
 
   const isErrorHandle = () => {
@@ -42,6 +48,26 @@ export default function Membership() {
                 name="email"
                 required
               />
+              <InputBox
+                  value=""
+                  label="password"
+                  htmlFor="password"
+                  type="password"
+                  id="password"
+                  placeholder="your password"
+                  name="password"
+                  required
+              />
+              <InputBox
+                  value=""
+                  label="address"
+                  htmlFor="address"
+                  type="text"
+                  id="address"
+                  placeholder="your address"
+                  name="address"
+                  required
+              />
               <div>
                 <label className=" text-sm font-medium text-gray-300 mb-2 flex justify-start">
                   your sex
@@ -61,7 +87,7 @@ export default function Membership() {
                   />
                 </div>
               </div>
-              <Button />
+              <Button login={"Click Me!"} />
             </Form>
           </MembershipInnerContain>
         </div>
@@ -69,3 +95,4 @@ export default function Membership() {
     </Layout>
   );
 }
+export default Membership;
