@@ -12,3 +12,7 @@ export interface ILabelProps {
   className?: string;
   label?: string;
 }
+
+export interface IButtonProps {
+  login?: string
+}

@@ -13,3 +13,8 @@ export interface IChatPageState {
     setActiveChat: (chat: string | null) => void
     addMessage: (chat: string, message: IChatPageProps) => void
 }
+
+
+export interface IContactProps {
+    searchTerm: string
+}
