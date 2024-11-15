@@ -1,5 +1,5 @@
 import {useState} from "react";
-import { Home, Search, Bell, Mail, User, Settings, MessageCircle } from "lucide-react";
+import { Home, Search, Bell, Mail, User, LogsIcon, MessageCircle } from "lucide-react";
 import {useNavigate} from "react-router-dom";
 import {useStore} from "../../store";
 
@@ -16,7 +16,8 @@ const isOpenModal = useStore(state => state.isToggleModal);
     { key: "home", icon: <Home className="h-6 w-6" />, path:"/"},
     {
       key: "search",
-      icon: <Search className="h-6 w-6"  />,
+      icon: <LogsIcon className="h-6 w-6"  />,
+      path:"/login",
     },
     { key: "bell", icon: <Bell className="h-6 w-6"  onClick={isOpenModal}/> },
     { key: "user", icon: <User className="h-6 w-6" />, path:"/mypage"},
