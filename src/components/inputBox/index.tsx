@@ -1,3 +1,4 @@
+import React, { forwardRef } from 'react';
 import Label from "../../atoms/label";
 import Input from "../../atoms/input";
 import { ILabelProps } from "../../types/create-membership";
@@ -7,6 +8,8 @@ export interface IInputBoxProps
   extends ILabelProps,
     InputHTMLAttributes<HTMLInputElement> {
   label: string;
+  isHandleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string | number;
 }
 const InputBox = ({
   label,
@@ -14,8 +17,10 @@ const InputBox = ({
   htmlFor,
   type,
   id,
+    value,
   name,
   placeholder,
+    isHandleChange
 }: IInputBoxProps) => {
   return (
     <div>
@@ -29,9 +34,10 @@ const InputBox = ({
       >
         {label}
       </Label>
-      <Input
+      <Input onChange={isHandleChange}
         type={type}
         id={id}
+             value={value
         required={required}
         name={name}
         placeholder={placeholder}

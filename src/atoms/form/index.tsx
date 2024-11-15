@@ -1,10 +1,10 @@
 import { ILayOutProps } from "../../types/create-membership";
 
-const isHandleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-};
+interface IFormProps extends ILayOutProps {
+  isHandleSubmit?: any;
+}
 
-const Form = ({ children }: ILayOutProps) => {
+const Form = ({ children, isHandleSubmit }: IFormProps) => {
   return (
     <form className="space-y-6" onSubmit={isHandleSubmit}>
       {children}
