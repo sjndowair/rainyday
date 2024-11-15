@@ -1,6 +1,6 @@
 import {useState} from "react";
 import Contact from "../contact";
-import {Cloud, Search} from "lucide-react";
+import {Cloud} from "lucide-react";
 
 
 
@@ -22,10 +22,10 @@ const UserSidebar = () => {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
-                    <Search className="absolute right-3 top-2.5 text-gray-400"/>
+
                 </div>
             </div>
-            <Contact />
+            <Contact searchTerm={searchTerm} />
         </div>
     )
 }
