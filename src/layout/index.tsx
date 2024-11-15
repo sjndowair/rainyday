@@ -30,11 +30,11 @@ const Layout = ({ children }: ILayout) => {
     <>
       <Header />
       <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900 text-gray-200 ">
+        {isModalState && <Noti />}
         <div
           id="rain-container"
           className="fixed inset-0 pointer-events-none "
         />
-        {isModalState && <Noti />}
         <main onClick={isCloseModal}>{children}</main>
       </div>
       <Footer />
