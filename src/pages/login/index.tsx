@@ -1,17 +1,30 @@
+import React from "react";
 import Layout from "../../layout";
 import Form from "../../atoms/form";
 import Button from "../../atoms/button";
 import InputBox from "../../components/inputBox";
 import Error from "../../atoms/error";
 import MembershipInnerContain from "../../components/membershipInnerContain";
-import { useState } from "react";
+import {useState} from "react";
+
 
 const LOGIN = "Login Click"
 
-export default function Login() {
-  const [isError, setIsError] = useState<boolean>(false);
+const Login = ()=> {
 
+    const [isInputData, setIsInputData] = useState({
+        email: "",
+        password: "",
+    })
 
+    const isHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.currentTarget;
+     setIsInputData((pre) => ({...pre, [name]: value}))
+    }
+
+    const isHandleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+    }
 
   return (
       <Layout>
@@ -21,10 +34,11 @@ export default function Login() {
           <div className="relative max-w-md w-full bg-gray-800 rounded-lg shadow-xl ">
             <div className="absolute inset-0 opacity-20 " />
             <MembershipInnerContain>
-              <Form>
+              <Form isHandleSubmit={isHandleSubmit}>
                 <InputBox
-                    value=""
+                    value={isInputData.email}
                     label="email"
+                    isHandleChange={isHandleChange}
                     htmlFor="email"
                     type="email"
                     id="email"
@@ -33,8 +47,9 @@ export default function Login() {
                     required
                 />
                 <InputBox
-                    value=""
+                    value={isInputData.password}
                     label="password"
+                    isHandleChange={isHandleChange}
                     htmlFor="password"
                     type="password"
                     id="password"
@@ -54,3 +69,5 @@ export default function Login() {
       </Layout>
   );
 }
+
+export default Login;
