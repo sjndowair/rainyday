@@ -7,14 +7,14 @@ import { InputHTMLAttributes } from "react";
 export interface IInputBoxProps
   extends ILabelProps,
     InputHTMLAttributes<HTMLInputElement> {
-  label: string;
   isHandleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  value: string | number;
+
+
+
 }
 const InputBox = ({
   label,
   required,
-  htmlFor,
   type,
   id,
     value,
@@ -25,7 +25,7 @@ const InputBox = ({
   return (
     <div>
       <Label
-        htmlFor={htmlFor}
+        htmlFor={id}
         className={
           type !== "radio"
             ? "flex justify-start text-sm font-medium text-gray-300"
@@ -33,13 +33,14 @@ const InputBox = ({
         }
       >
         {label}
-      </Label>
+
       <Input onChange={isHandleChange}
         type={type}
         id={id}
-             value={value
+             value={value}
         required={required}
         name={name}
+             autoComplete="current-password"
         placeholder={placeholder}
         className={
           type !== "radio"
@@ -47,6 +48,7 @@ const InputBox = ({
             : "form-radio text-blue-500 focus:ring-blue-500 h-4 w-4"
         }
       />
+      </Label>
     </div>
   );
 };
