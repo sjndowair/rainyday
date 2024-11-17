@@ -12,7 +12,7 @@ export interface IRadioBoxProps
 
 const RadioBox = ({ type, name, value, isHandleChange }: IRadioBoxProps) => {
   return (
-    <Label className=" inline-flex items-center ">
+    <label className="inline-flex items-center">
       <Input
         type={type}
         name={name}
@@ -21,7 +21,7 @@ const RadioBox = ({ type, name, value, isHandleChange }: IRadioBoxProps) => {
         className="form-radio text-blue-500 focus:ring-blue-500 h-4 w-4"
       />
       <span className="ml-2 text-gray-300">{value}</span>
-    </Label>
+    </label>
   );
 };
 
