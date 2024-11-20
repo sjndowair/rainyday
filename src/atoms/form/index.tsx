@@ -1,7 +1,8 @@
+import React from "react";
 import { ILayOutProps } from "../../types/create-membership";
 
 interface IFormProps extends ILayOutProps {
-  isHandleSubmit?: any;
+  isHandleSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const Form = ({ children, isHandleSubmit }: IFormProps) => {
