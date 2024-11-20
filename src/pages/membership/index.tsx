@@ -1,13 +1,13 @@
-
-import React from 'react';
-import {useState} from "react";
+//React
+import React, {useId} from 'react';
+import {useState, useEffect} from "react";
 
 //fire base
 import "firebase/firestore"
-import {auth, db} from "../../constants/firebase-contants";
+
+import {auth, db, USER_COLLECTION} from "../../constants/firebase-contants";
 import {doc, setDoc} from "firebase/firestore"
 import {createUserWithEmailAndPassword} from "firebase/auth"
-
 
 //Router
 import {useNavigate} from "react-router-dom";
@@ -26,6 +26,7 @@ const Membership = () => {
 
   const navigate = useNavigate();
 
+
   const [isFormData, setIsFormData] = useState({
     name: "",
     email: "",
@@ -33,7 +34,10 @@ const Membership = () => {
     address: "",
   })
 
+
+
   const [isError, setIsError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
    const isHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -44,23 +48,21 @@ const Membership = () => {
   }
 
 
-  console.log("isFormData",isFormData);
 
   const isHandleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
+
     try{
-      const userCredential = await (createUserWithEmailAndPassword(auth, isFormData.email, isFormData.password))
-      const user = userCredential.user
+      const { user } = await createUserWithEmailAndPassword(auth, isFormData.email, isFormData.password)
+        const useDoc = doc(USER_COLLECTION, user.uid)
+      const { uid } = user
 
-      console.log("isUserData",user)
 
-      await setDoc(doc(db, "users", user.uid), {
-          name: isFormData.name,
-          email: isFormData.email,
-          address: isFormData.address,
-      });
+
+      navigate("/login")
       console.log("user 등록이 완료되었습니다.  '다음에 할건 회원가입 완료 시 로그인 페이지로 이동'")
-        navigate("/login")
+      console.log(uid)
     } catch(e) {
       if(e) {
         console.log("등록오류:", e)
@@ -76,7 +78,7 @@ const Membership = () => {
         <div className="relative max-w-md w-full bg-gray-800 rounded-lg shadow-xl ">
           <div className="absolute inset-0 opacity-20 flex flex-col" />
           <MembershipInnerContain>
-            <Form isHandleSubmit={isHandleSubmit}>
+            <form className="space-y-6" onSubmit={isHandleSubmit}>
               <InputBox
                 value={isFormData.name}
                 label="Name"
@@ -118,7 +120,7 @@ const Membership = () => {
                   required
               />
               <Button login={"Click Me!"} />
-            </Form>
+            </form>
           </MembershipInnerContain>
         </div>
       </div>
@@ -126,3 +128,4 @@ const Membership = () => {
   );
 }
 export default Membership;
+
