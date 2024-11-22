@@ -17,17 +17,17 @@ const Login = ()=> {
 
 const onClickLogOut = async  () => {
 
-        const logOut =  signOut(auth);
+    const logOut =  signOut(auth);
 try {
     await  logOut
     navigate("/membership")
+    console.log(logOut)
+    console.log("real jjin logout")
     console.log(auth);
 
 } catch (e){
     console.error(e);
 }
-
-
 
 }
 
