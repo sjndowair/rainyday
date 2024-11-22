@@ -4,21 +4,16 @@ import {useState} from "react";
 
 //fire base
 import "firebase/firestore"
-
 import {auth, db, USER_COLLECTION} from "../../constants/firebase-contants";
-import {doc} from "firebase/firestore"
 import {createUserWithEmailAndPassword ,setPersistence,browserLocalPersistence } from "firebase/auth"
 
 //Router
 import {useNavigate} from "react-router-dom";
 
 //atoms
-
-
 import Button from "../../atoms/button";
 import InputBox from "../../components/inputBox";
 import MembershipInnerContain from "../../components/membershipInnerContain";
-
 
 
 const Membership = () => {
@@ -52,7 +47,7 @@ const Membership = () => {
       const { uid } = user
       console.log(uid)
 
-      navigate("/")
+      navigate("/home")
     } catch(e) {
       console.log(e);
     }
