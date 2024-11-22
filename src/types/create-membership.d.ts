@@ -14,5 +14,7 @@ export interface ILabelProps {
 }
 
 export interface IButtonProps {
-  login?: string
+  login?: string;
+  isLoading?: boolean;
+  onClickLogOut?: () => void;
 }
