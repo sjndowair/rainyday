@@ -14,6 +14,7 @@ import {
   LogOut,
 } from "lucide-react";
 import {useNavigate} from "react-router-dom";
+import Layout from "../../layout";
 import { MYPAGE_DUMMY_DATA } from "../../dummy/dummy-data";
 
 export default function MyPage() {
@@ -22,6 +23,7 @@ export default function MyPage() {
   const navigate = useNavigate();
 
   return (
+<Layout>
     <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900 text-gray-200">
       <div
         id="rain-container"
@@ -154,6 +156,7 @@ export default function MyPage() {
         </div>
       </main>
 
+
       <style>{`
         .raindrop {
           position: absolute;
@@ -174,5 +177,6 @@ export default function MyPage() {
         }
       `}</style>
     </div>
+</Layout>
   );
 }
