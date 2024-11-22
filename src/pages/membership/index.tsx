@@ -1,13 +1,13 @@
 //React
 import React, {useId} from 'react';
-import {useState, useEffect} from "react";
+import {useState} from "react";
 
 //fire base
 import "firebase/firestore"
 
 import {auth, db, USER_COLLECTION} from "../../constants/firebase-contants";
 import {doc} from "firebase/firestore"
-import {createUserWithEmailAndPassword} from "firebase/auth"
+import {createUserWithEmailAndPassword ,setPersistence,browserLocalPersistence } from "firebase/auth"
 
 //Router
 import {useNavigate} from "react-router-dom";
@@ -47,11 +47,12 @@ const Membership = () => {
 
     try{
       const { user } = await createUserWithEmailAndPassword(auth, isFormData.email, isFormData.password)
-        const useDoc = doc(USER_COLLECTION, user.uid)
+      setPersistence(auth, browserLocalPersistence)
+        // const useDoc = doc(USER_COLLECTION, user.uid)
       const { uid } = user
       console.log(uid)
 
-      navigate("/login")
+      navigate("/")
     } catch(e) {
       console.log(e);
     }
