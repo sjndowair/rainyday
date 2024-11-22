@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import InfoBox from "../../components/infoBox";
 import StoryBox from "../../components/storiesBox";
 import Post from "../../components/post";
+import Layout from "../../layout";
 
 
 const Profile = () => {
@@ -15,13 +16,13 @@ const Profile = () => {
   }, []);
 
   return (
-    <>
+    <Layout>
       <main className="max-w-screen-xl mx-auto p-8 flex flex-col gap-10 ">
         <InfoBox />
         <StoryBox isLoading={isLoading} />
         <Post isLoading={isLoading} />
       </main>
-    </>
+    </Layout>
   );
 };
 
