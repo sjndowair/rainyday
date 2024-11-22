@@ -4,16 +4,17 @@ import Button from "../../atoms/button";
 import InputBox from "../../components/inputBox";
 import MembershipInnerContain from "../../components/membershipInnerContain";
 import {useState} from "react";
-import { signOut} from "firebase/auth";
+import {signOut} from "firebase/auth";
 import {auth} from "../../constants/firebase-contants";
 import {useNavigate} from "react-router-dom";
+import {signInWithEmailAndPassword} from "firebase/auth"
 
 
 
 const Login = ()=> {
 
     const navigate = useNavigate();
-
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
 const onClickLogOut = async  () => {
 
@@ -21,9 +22,6 @@ const onClickLogOut = async  () => {
 try {
     await  logOut
     navigate("/membership")
-    console.log(logOut)
-    console.log("real jjin logout")
-    console.log(auth);
 
 } catch (e){
     console.error(e);
@@ -41,8 +39,15 @@ try {
      setIsInputData((pre) => ({...pre, [name]: value}))
     }
 
-    const isHandleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const isHandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+         setIsLoading(true)
+        try {
+         const  { user, providerId, operationType } = await signInWithEmailAndPassword(auth, isInputData.email, isInputData.password )
+        } catch (e) {
+            console.log(e)
+        }
+
     }
 
   return (
@@ -78,6 +83,7 @@ try {
                 <Button  />
 
               </Form>
+                <div className="pt-10" />
                 <Button onClickLogOut={onClickLogOut}/>
             </MembershipInnerContain>
 
