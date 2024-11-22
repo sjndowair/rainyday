@@ -4,7 +4,6 @@ import Footer from "../components/footer";
 import "./style.css";
 import Noti from "../components/noti";
 import {useStore} from "../store";
-import {auth} from "../constants/firebase-contants";
 import Member from "../member";
 
 
@@ -17,8 +16,8 @@ const Layout = ({ children }: ILayout) => {
 
   const isModalState = useStore(state => state.modalState);
   const isCloseModal = useStore(state => state.isCloseModal)
-  const isLoginCheck = auth.currentUser
-  console.log(isLoginCheck)
+
+
 
   useEffect(() => {
     const isCreateRainDropEffect = () => {
