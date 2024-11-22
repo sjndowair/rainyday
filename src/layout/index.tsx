@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useCallback } from "react";
+import { ReactNode, useEffect,  JSX } from "react";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import "./style.css";
