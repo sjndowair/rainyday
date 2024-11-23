@@ -14,6 +14,7 @@ import {useNavigate} from "react-router-dom";
 import Button from "../../atoms/button";
 import InputBox from "../../components/inputBox";
 import MembershipInnerContain from "../../components/membershipInnerContain";
+import Spinner from "../../loading/spinner";
 
 
 const Membership = () => {
@@ -46,11 +47,13 @@ const Membership = () => {
         // const useDoc = doc(USER_COLLECTION, user.uid)
       const { uid } = user
       console.log(uid)
-
+     console.log(user)
       navigate("/home")
     } catch(e) {
       console.log(e);
     }
+
+    if(isLoading) return <Spinner />
 
   };
 
@@ -103,6 +106,7 @@ const Membership = () => {
               />
               <Button isLoading={isLoading} login={"Click Me!"} />
             </form>
+            <div onClick={() => navigate("login")} className="pt-2 cursor-pointer hover: underline-offset-1">이미 회원이신가요?</div>
           </MembershipInnerContain>
         </div>
       </div>
