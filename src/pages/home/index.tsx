@@ -62,11 +62,6 @@ export default function Home() {
                 </div>
 
                 <div className="h-[400px]">
-                    {/*{activeChart === 'candlestick' && (*/}
-                    {/*    <ResponsiveContainer width="100%" height="100%">*/}
-
-                    {/*    </ResponsiveContainer>*/}
-                    {/*)}*/}
 
                     {activeChart === 'line' && (
                         <ResponsiveContainer width="100%" height="100%">
@@ -82,6 +77,7 @@ export default function Home() {
                                 <Line type="monotone" dataKey="value" stroke="#00C49F" strokeWidth={2} />
                             </LineChart>
                         </ResponsiveContainer>
+
                     )}
 
                     {activeChart === 'donut' && (
