@@ -8,30 +8,8 @@ import {
     PieChart, Pie, Cell
 } from 'recharts'
 import { Cloud, Droplet } from 'lucide-react'
+import {donutData, lineData} from "../../dummy/dummy-data";
 
-// Sample data
-const candlestickData = [
-    { date: '2023-01-01', open: 50, high: 60, low: 45, close: 55 },
-    { date: '2023-01-02', open: 55, high: 65, low: 50, close: 60 },
-    { date: '2023-01-03', open: 60, high: 70, low: 55, close: 65 },
-    { date: '2023-01-04', open: 65, high: 75, low: 60, close: 70 },
-    { date: '2023-01-05', open: 70, high: 80, low: 65, close: 75 },
-]
-
-const lineData = [
-    { date: '2023-01-01', value: 55 },
-    { date: '2023-01-02', value: 60 },
-    { date: '2023-01-03', value: 65 },
-    { date: '2023-01-04', value: 70 },
-    { date: '2023-01-05', value: 75 },
-]
-
-const donutData = [
-    { name: 'Tech', value: 400 },
-    { name: 'Finance', value: 300 },
-    { name: 'Healthcare', value: 200 },
-    { name: 'Consumer', value: 100 },
-]
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
 
