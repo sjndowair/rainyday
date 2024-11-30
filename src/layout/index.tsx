@@ -1,10 +1,11 @@
-import { ReactNode, useEffect,  JSX } from "react";
+import { ReactNode, useState, useEffect,  JSX } from "react";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import "./style.css";
 import Noti from "../components/noti";
-import {useStore} from "../store";
+import {useStore, useThemeStore} from "../store";
 import Member from "../member";
+import Theme from "../components/theme";
 
 
 
@@ -15,8 +16,9 @@ interface ILayout {
 const Layout = ({ children }: ILayout) => {
 
   const isModalState = useStore(state => state.modalState);
-  const isCloseModal = useStore(state => state.isCloseModal)
-
+  const isCloseModal = useStore(state => state.isCloseModal);
+  // const [onClickToggleTheme, se]
+  const {toggleTheme,isDarkMode} = useThemeStore();
 
 
   useEffect(() => {
@@ -34,14 +36,14 @@ const Layout = ({ children }: ILayout) => {
   return (
            <Member>
           <Header />
-          <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900 text-gray-200 ">
+          <Theme >
             {isModalState && <Noti />}
             <div
                 id="rain-container"
                 className="fixed inset-0 pointer-events-none "
             />
             <main onClick={isCloseModal}>{children}</main>
-          </div>
+          </Theme>
           <Footer />
         </Member>
 
