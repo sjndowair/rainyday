@@ -1,8 +1,7 @@
 // store.js
 import {create} from "zustand/react";
 
-import {IChatPageState} from "../types/create-chatPage";
-
+import {IChatPageState, IThemeStore} from "../types/create-chatPage";
 
 
 const useStore = create((set:any) => ({
@@ -12,8 +11,6 @@ const useStore = create((set:any) => ({
     isToggleModal: () => set((state: any) => ({ modalState: !state.modalState })),
 
 }));
-
-
 
 
 const useChatStore = create<IChatPageState>((set) => ({
@@ -30,6 +27,7 @@ const useChatStore = create<IChatPageState>((set) => ({
     },
 
 
+
     setActiveChat: (chat) => set({ activeChat: chat }),
     addMessage: (chat, message) => set((state) => ({
         messages: {
@@ -39,4 +37,11 @@ const useChatStore = create<IChatPageState>((set) => ({
     })),
 }))
 
-export {useStore, useChatStore};
+
+
+const useThemeStore = create<IThemeStore>((set) => ({
+    isDarkMode: true,
+    toggleTheme: () => set((props) => ({isDarkMode: !props.isDarkMode}))
+}))
+
+export {useStore, useChatStore, useThemeStore};
