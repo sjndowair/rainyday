@@ -1,20 +1,21 @@
-import {Phone,  User, Video} from "lucide-react";
-import {useChatStore} from "../../store";
+
+import {useChatStore, useThemeStore} from "../../store";
 import ChatInput from "../chatInput";
 import ChatInitial from "../chatInitial";
 
 const ChatArea = () => {
 
     const {activeChat,  messages} = useChatStore();
+    const {isDarkMode} = useThemeStore();
 
 
     return (
         <div className="flex-1 flex flex-col">
             {activeChat ? (<>
                 <div
-                    className="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg p-4 flex items-center justify-between border-b border-gray-700">
+                    className={`${isDarkMode ? "bg-gray-800  border-b border-gray-700" : "bg-opacity-55 border-b border-purple-300 shadow-[0_10px_10px_-1px_rgba(233,213,255,0.5)]"} bg-opacity-50 backdrop-filter backdrop-blur-lg p-4 flex items-center justify-between`}>
                     <div className="flex items-center">
-                        <div className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center mr-3">
+                        <div className={`w-10 h-10 rounded-full ${isDarkMode ?"bg-gray-600" : "bg-opacity-55 border border-purple-700 text-black" }  flex items-center justify-center mr-3 font-bold`}>
                             {activeChat[0]}
                         </div>
                         <span className="font-semibold">{activeChat}</span>
