@@ -3,6 +3,7 @@ import Layout from "../../layout";
 import {useChatStore} from "../../store";
 import ChatArea from "../../components/ChatArea";
 import UserSidebar from "../../components/sidebar";
+import Theme from "../../components/theme";
 
 
  const MainPage =() => {
@@ -25,11 +26,13 @@ import UserSidebar from "../../components/sidebar";
 
     return (
         <Layout>
-        <div className="flex h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 text-white">
+        <Theme >
+            <div className={`flex`}>
             <div id="rain-container" className="fixed inset-0 pointer-events-none" />
            <UserSidebar />
           <ChatArea />
-        </div>
+            </div>
+        </Theme>
         </Layout>
     )
 }

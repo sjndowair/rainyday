@@ -1,7 +1,7 @@
 import {useState} from "react";
 import { Home, Search, Bell, Mail, User, LogsIcon, MessageCircle } from "lucide-react";
 import {useNavigate} from "react-router-dom";
-import {useStore} from "../../store";
+import {useStore, useThemeStore} from "../../store";
 
 const Navigation = () => {
 
@@ -9,7 +9,7 @@ const Navigation = () => {
 const navigate = useNavigate();
 
 const isOpenModal = useStore(state => state.isToggleModal);
-
+const {isDarkMode} = useThemeStore();
 
   const isNavigationIcon = [
     {key: "message", icon: <MessageCircle className="h-6 w-6" />, path:"/chat" },
@@ -32,7 +32,7 @@ const isOpenModal = useStore(state => state.isToggleModal);
         {isNavigationIcon.map((e, i) => (
           <li key={i}>
             <button onClick={() => navigate(e?.path!)}
-             className="hover:text-blue-400 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-full p-1">
+             className={`${isDarkMode ? "hover:text-blue-400" : "hover:text-purple-900"}  transition-colors focus:outline-none  rounded-full p-1`}>
               {e.icon}
             </button>
           </li>
