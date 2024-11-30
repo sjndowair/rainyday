@@ -8,6 +8,7 @@ import {
     PieChart, Pie, Cell
 } from 'recharts'
 import { Cloud, Droplet } from 'lucide-react'
+import Theme from "../../components/theme";
 import {donutData, lineData} from "../../dummy/dummy-data";
 
 
@@ -30,7 +31,7 @@ export default function Home() {
     return (
         <Layout>
             {!isLoading && <Loading />}
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 text-white p-8">
+        <Theme>
             <div id="rain-container" className="fixed inset-0 pointer-events-none"></div>
 
             <div className="max-w-4xl mx-auto bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg rounded-lg shadow-xl p-6">
@@ -115,7 +116,7 @@ export default function Home() {
                     <div className="text-sm">Last updated: {new Date().toLocaleString()}</div>
                 </div>
             </div>
-        </div>
+        </Theme>
         </Layout>
     )
 }
