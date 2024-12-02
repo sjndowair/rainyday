@@ -15,46 +15,29 @@ import {
 } from "lucide-react";
 import {useNavigate} from "react-router-dom";
 import Layout from "../../layout";
+import Theme from "../../components/theme";
 import { MYPAGE_DUMMY_DATA } from "../../dummy/dummy-data";
+import {useThemeStore} from "../../store";
 
 export default function MyPage() {
   const [weatherMood, setWeatherMood] = useState("☁️ Cloudy");
+  const { isDarkMode } = useThemeStore();
 
   const navigate = useNavigate();
 
   return (
 <Layout>
-    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900 text-gray-200">
+    <Theme>
       <div
         id="rain-container"
         className="fixed inset-0 pointer-events-none z-50"
       ></div>
 
-      {/* Header */}
-      <header className="sticky top-0 z-40 bg-gray-900 bg-opacity-80 backdrop-blur-md p-4 shadow-lg">
-        <div className="max-w-screen-xl mx-auto flex justify-between items-center">
-          <h1 onClick={() => navigate("/profile")} className="text-2xl font-bold flex items-center hover:cursor-pointer">
-            <Umbrella className="mr-2" />
-            RainyDaySocial
-          </h1>
-          <nav className="flex space-x-4">
-            <button className="hover:text-blue-400 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-full p-1">
-              <User className="h-6 w-6" />
-            </button>
-            <button className="hover:text-blue-400 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-full p-1">
-              <Settings className="h-6 w-6" />
-            </button>
-            <button onClick={() => navigate("/profile")} className="hover:text-blue-400 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-full p-1">
-              <LogOut className="h-6 w-6" />
-            </button>
-          </nav>
-        </div>
-      </header>
 
       <main className="max-w-screen-xl mx-auto p-4">
         {/* Profile Section */}
-        <div className="bg-gray-800 bg-opacity-50 rounded-lg overflow-hidden backdrop-blur-sm mb-6">
-          <div className="relative h-48 bg-gradient-to-r from-blue-500 to-purple-600">
+        <div className={` ${isDarkMode ? "bg-gray-800 bg-opacity-50" : "bg-purple-300 bg-opacity-10 border border-purple-300" }  rounded-lg overflow-hidden backdrop-blur-sm mb-6`}>
+          <div className={`relative h-48 bg-gradient-to-r from-blue-500 to-purple-600 ${isDarkMode ? "bg-gradient-to-r from-blue-500 to-purple-600" : "bg-gradient-to-r from-pink-400 to-purple-400 border border-purple-300"}`}>
             <button className="absolute top-4 right-4 bg-gray-800 bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400">
               <Edit className="h-5 w-5" />
             </button>
@@ -82,7 +65,7 @@ export default function MyPage() {
         </div>
 
         {/* Weather Mood */}
-        <div className="bg-blue-900 bg-opacity-30 rounded-lg p-4 mb-6">
+        <div className={`${isDarkMode ? "bg-blue-900 " : "bg-purple-300 bg-opacity-10 border border-purple-300 "} bg-opacity-30 rounded-lg p-4 mb-6`}>
           <h3 className="text-lg font-semibold mb-2">Today's Weather Mood</h3>
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -128,7 +111,7 @@ export default function MyPage() {
           {MYPAGE_DUMMY_DATA.map((post) => (
             <div
               key={post.id}
-              className="bg-gray-800 bg-opacity-50 rounded-lg overflow-hidden backdrop-blur-sm transition-all hover:bg-opacity-70"
+              className={`${isDarkMode ? "bg-gray-800 bg-opacity-50" : "bg-purple-800 bg-opacity-10 hover:bg-opacity-20"} rounded-lg overflow-hidden backdrop-blur-sm transition-all hover:bg-opacity-70`}
             >
               <div className="p-4">
                 <p className="mb-4">{post.content}</p>
@@ -176,7 +159,7 @@ export default function MyPage() {
           }
         }
       `}</style>
-    </div>
+    </Theme>
 </Layout>
   );
 }

@@ -34,11 +34,12 @@ const ChatArea = () => {
                         >
                             <div className={`max-w-xs lg:max-w-md xl:max-w-lg ${
                                 message.sender === 'You'
-                                    ? 'bg-blue-600 rounded-l-lg rounded-br-lg'
-                                    : 'bg-gray-700 rounded-r-lg rounded-bl-lg'
+                                    ? (isDarkMode ? 'bg-blue-600 rounded-l-lg rounded-br-lg'
+                                                  : 'bg-purple-600 rounded-l-lg rounded-br-lg text-white')
+                                    : (isDarkMode ? 'bg-gray-700 rounded-r-lg rounded-bl-lg' : 'bg-gray-100 rounded-r-lg rounded-bl-lg')
                             } p-3 shadow-md`}>
                                 <p>{message.content}</p>
-                                <p className="text-xs text-gray-300 mt-1">{message.timestamp}</p>
+                                <p className={`text-xs ${isDarkMode ? "text-gray-300" : "text-black"}  mt-1`}>{message.timestamp}</p>
                             </div>
                         </div>
                     ))}

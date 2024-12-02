@@ -8,11 +8,14 @@ import {
   MessageCircle,
   MoreHorizontal,
 } from "lucide-react";
+import {useThemeStore} from "../../store";
 import SkeletonPost from "../../loading/skeleton/skeletonPost";
 
 const Post = ({ isLoading }: ILoadingProps) => {
   const [isLikedPosts, setIsLikedPosts] = useState<Set<number>>(new Set());
   const [isBookMark, setIsBookMark] = useState<Set<number>>(new Set());
+
+  const {isDarkMode} = useThemeStore();
 
   const isToggleLiked = (postId: number) => {
     setIsLikedPosts((prev) => {
@@ -38,7 +41,7 @@ const Post = ({ isLoading }: ILoadingProps) => {
           {POST_DUMMY_DATA.map((e) => (
             <div
               key={e.id}
-              className="bg-gray-800 bg-opacity-50 rounded-lg overflow-hidden backdrop-blur-sm transition-all hover:bg-opacity-70"
+              className={`${isDarkMode ? "bg-gray-800 bg-opacity-50" : "bg-purple-300 bg-opacity-50"} rounded-lg overflow-hidden backdrop-blur-sm transition-all hover:bg-opacity-70`}
             >
               <div className="p-4 flex items-center">
                 <img
