@@ -8,6 +8,9 @@ import {signOut} from "firebase/auth";
 import {auth} from "../../constants/firebase-contants";
 import {useNavigate} from "react-router-dom";
 import {signInWithEmailAndPassword} from "firebase/auth"
+import Theme from "../../components/theme";
+import {useThemeStore} from "../../store";
+import CenterBox from "../../components/centerBox";
 
 
 
@@ -15,6 +18,8 @@ const Login = ()=> {
 
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState<boolean>(false);
+
+
 
 const onClickLogOut = async  () => {
 
@@ -44,6 +49,10 @@ try {
          setIsLoading(true)
         try {
          const  { user, providerId, operationType } = await signInWithEmailAndPassword(auth, isInputData.email, isInputData.password )
+            console.log(user)
+            console.log(providerId)
+            console.log(operationType)
+            navigate("/home")
         } catch (e) {
             console.log(e)
         }
@@ -51,9 +60,10 @@ try {
     }
 
   return (
-      <div>
-        <div className="min-h-screen flex items-center  justify-center bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900 text-gray-200">
-          <div className="relative max-w-md w-full bg-gray-800 rounded-lg shadow-xl ">
+      <Theme>
+        <div className="min-h-screen  p-8 flex items-center justify-center ">
+
+          <CenterBox>
             <div className="absolute inset-0 opacity-20 " />
             <MembershipInnerContain>
               <Form isHandleSubmit={isHandleSubmit}>
@@ -79,19 +89,20 @@ try {
                     name="password"
                     required
                 />
-                <div className="pb-5"/>
-                <Button  />
+                <div className={`pt-1`} />
+                  <Button>로그인</Button>
 
               </Form>
-                <div className="pt-10" />
-                <Button onClickLogOut={onClickLogOut}/>
+                <div className="pt-5" />
+                <Button onClickLogOut={onClickLogOut}>로그아웃</Button>
+                <div onClick={() => navigate("/membership")} className={`pt-6 cursor-pointer hover:underline`}>회원가입 하러가기</div>
             </MembershipInnerContain>
 
-          </div>
+          </CenterBox>
 
         </div>
 
-      </div>
+      </Theme>
   );
 }
 
