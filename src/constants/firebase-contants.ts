@@ -1,6 +1,6 @@
 import "firebase/firestore"
 import {initializeApp} from "firebase/app"
-import { getAuth } from "firebase/auth";
+import { getAuth, fetchSignInMethodsForEmail } from "firebase/auth";
 import {getFirestore, collection} from "firebase/firestore";
 
 
@@ -21,7 +21,18 @@ const firebaseConfig = {
  const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
-export const USER_COLLECTION = collection(db, "user");
+
+export const checkIfEmailExists = async (email: string) => {
+    try{
+        const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+        if(signInMethods.length > 0) return true
+        console.log("이건 트루임")
+    }
+    catch (error) {
+        console.log("이건 에러임", error);
+        return false;
+    }
+}
 
 
-
+console.log(checkIfEmailExists)
