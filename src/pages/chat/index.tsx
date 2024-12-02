@@ -1,6 +1,10 @@
 import { useState } from 'react'
-import Layout from "../../layout";
+
 import {useChatStore} from "../../store";
+
+import { auth, db } from "../../constants/firebase-contants";
+import {getDatabase, ref, push, onChildAdded} from "firebase/database"
+import Layout from "../../layout";
 import ChatArea from "../../components/ChatArea";
 import UserSidebar from "../../components/sidebar";
 import Theme from "../../components/theme";
