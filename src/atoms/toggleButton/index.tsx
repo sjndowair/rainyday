@@ -13,6 +13,9 @@ const ToggleButton = () => {
 
     const {isDarkMode, toggleTheme} = useThemeStore();
 
+
+
+
     useEffect(() => {
         setOnClickToggleTheme(true)
     }, []);
@@ -22,7 +25,7 @@ const ToggleButton = () => {
 
     return (
             <label htmlFor="theme-toggle" className="flex items-center cursor-pointer">
-                <div className="relative">
+                <div className="relative z-[9999]">
                     <input
                         type="checkbox"
                         id="theme-toggle"
