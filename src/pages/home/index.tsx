@@ -13,15 +13,13 @@ import { useThemeStore} from "../../store";
 import ChartButton from "../../atoms/chartButton";
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
+const CHART_TYPE = ["candleStick", "line", "donut" ]
 
 export default function Home() {
-    const [isActiveChart, setIsActiveChart] = useState<string>('')
+    const [isActiveChart, setIsActiveChart] = useState<string>('candleStick')
 
     const {isDarkMode} =  useThemeStore()
 
-//     const onClickActiveChart = () => {
-//     set}
-// }
 
     return (
         <Layout>
@@ -37,7 +35,9 @@ export default function Home() {
                         </h1>
 
                         <div className="flex space-x-2">
-                    <ChartButton isActiveChart={isActiveChart} />
+                            {CHART_TYPE.map((type, key) => (
+                                <ChartButton key={key} type={type} isActiveChart={isActiveChart} setIsActiveChart={setIsActiveChart} />
+                            ))}
                         </div>
                     </div>
 
