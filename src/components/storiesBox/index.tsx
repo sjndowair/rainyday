@@ -2,7 +2,14 @@ import { STORY_DUMMY_DATA } from "../../dummy/dummy-data";
 import { ILoadingProps } from "../../types/mainHomepage";
 import SkeletonStoryBox from "../../loading/skeleton/skeletonStoryBox";
 
+
+
 const StoryBox = ({ isLoading }: ILoadingProps) => {
+
+
+
+    console.log(STORY_DUMMY_DATA[1].avatar)
+
   return (
     <div className="mb-6 overflow-x-auto">
       <div className="flex space-x-4 gap-[1rem]">
