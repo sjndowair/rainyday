@@ -20,58 +20,58 @@ export interface ISendMessageProps {
 
 }
 
- const MainPage =() => {
+const MainPage =() => {
 
-     const [messages, setMessages] = useState<ISendMessageProps[]>([]);
-     const [newMessage, setNewMessage] = useState('');
+    const [messages, setMessages] = useState<ISendMessageProps[]>([]);
+    const [newMessage, setNewMessage] = useState('');
 
-     const sendMessage = async ({userId, message}:ISendMessageProps) => {
+    const sendMessage = async ({userId, message}:ISendMessageProps) => {
 
-         try {
-        await addDoc(collection(db, "messages"), {
-            userId,
-            text: message,
-            createdAt: new Date().toISOString(),
-        });
-         } catch (e) {
-             console.log("this message Error:", e)
-         }
-     }
+        try {
+            await addDoc(collection(db, "messages"), {
+                userId,
+                text: message,
+                createdAt: new Date().toISOString(),
+            });
+        } catch (e) {
+            console.log("this message Error:", e)
+        }
+    }
 
-     const subscribeToMessages = (callback:Dispatch<SetStateAction<ISendMessageProps[]>>) => {
+    const subscribeToMessages = (callback:Dispatch<SetStateAction<ISendMessageProps[]>>) => {
         const q = query(collection(db, "message"),
             orderBy("createdAt"));
         return onSnapshot(q, (querySnapshot) => {
             const messages = querySnapshot.docs.map((doc) => ({
                 id: doc.id,
-                    ...doc.data()
+                ...doc.data()
             }));
             callback(messages)
         })
-     }
+    }
 
-     useEffect(() => {
-         const unsubscribe = subscribeToMessages(setMessages);
-         return () => unsubscribe()
-     }, []);
+    useEffect(() => {
+        const unsubscribe = subscribeToMessages(setMessages);
+        return () => unsubscribe()
+    }, []);
 
     const onClickSendMessage = () => {
-         if(newMessage.trim()){
+        if(newMessage.trim()){
             sendMessage({userId: "currentUserId", message: newMessage})
-             setNewMessage("");
-         }
+            setNewMessage("");
+        }
     }
 
     return (
         <Layout>
-        <Theme >
-            <div className={`flex`}>
-            <div id="rain-container" className="fixed inset-0 pointer-events-none" />
-           <UserSidebar />
-          <ChatArea messages={messages} setMessages={setMessages}
-                    newMessage={newMessage} setNewMessage={setNewMessage} onClickSendMessage={onClickSendMessage} />
-            </div>
-        </Theme>
+            <Theme >
+                <div className={`flex`}>
+                    <div id="rain-container" className="fixed inset-0 pointer-events-none" />
+                    <UserSidebar />
+                    <ChatArea messages={messages} setMessages={setMessages}
+                              newMessage={newMessage} setNewMessage={setNewMessage} onClickSendMessage={onClickSendMessage} />
+                </div>
+            </Theme>
         </Layout>
     )
 }

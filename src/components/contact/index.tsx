@@ -4,7 +4,7 @@ import {IContactProps} from "../../types/create-chatPage";
 
 const Contact = ({searchTerm}:IContactProps) => {
     const {isDarkMode} = useThemeStore();
-    const {setActiveChat, activeChat} = useChatStore();
+    const {activeChat} = useChatStore();
     const isFilteredContacts = CONTANT.filter(item => item.toLowerCase().includes(searchTerm.toLowerCase()));
 
     return (
@@ -12,7 +12,7 @@ const Contact = ({searchTerm}:IContactProps) => {
             {isFilteredContacts.map(item => (
                 <button
                     key={item}
-                    onClick={() => setActiveChat(item)}
+                    onClick={() => activeChat?.[0]}
                     className={`flex items-center w-full p-3 ${isDarkMode ? "hover:bg-gray-800" : "hover:bg-purple-200 "} transition-colors ${activeChat === item ? (isDarkMode  ? "bg-gray-700 " : "bg-purple-300 bg-opacity-45 ") : ""}`}
 
                 >
