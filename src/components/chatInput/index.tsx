@@ -11,7 +11,7 @@ const ChatInput = ({newMessage, setNewMessage, onClickSendMessage, messages}:ICh
 
 
     return (<div
-        className={`${isDarkMode ? "bg-gray-800 bg-opacity-50 border-t border-gray-700" 
+        className={`${isDarkMode ? "bg-gray-800 bg-opacity-50 border-t border-gray-700"
             : " bg-opacity-55 border-t border-purple-300"}
          backdrop-filter backdrop-blur-lg p-4 `}>
         <div className="flex items-center space-x-2">
@@ -23,7 +23,7 @@ const ChatInput = ({newMessage, setNewMessage, onClickSendMessage, messages}:ICh
                 value={newMessage}
                 onChange={(e) =>
                     setNewMessage?.(e.target.value)}
-                onKeyPress={(e) =>
+                onKeyDown={(e) =>
                     e.key === 'Enter' && onClickSendMessage?.() }
             />
             <button
@@ -37,4 +37,4 @@ const ChatInput = ({newMessage, setNewMessage, onClickSendMessage, messages}:ICh
     </div>)
 }
 
-export default ChatInput;
+export default ChatInput; 

@@ -9,7 +9,7 @@ interface IChatPageProps {
 
 export interface IChatPageState {
     activeChat: string | null
-    messages: Record<string, IChatPageProps[]>
+    message: Record<string, IChatPageProps[]>
     setActiveChat: (chat: string | null) => void
     addMessage: (chat: string, message: IChatPageProps) => void
 }
@@ -17,4 +17,9 @@ export interface IChatPageState {
 
 export interface IContactProps {
     searchTerm: string
+}
+
+export interface IThemeStore {
+    isDarkMode: boolean;
+    toggleTheme: () => void;
 }

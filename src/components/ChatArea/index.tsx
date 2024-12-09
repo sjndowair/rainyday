@@ -1,4 +1,5 @@
 import {useChatStore, useThemeStore} from "../../store";
+
 import ChatInput from "../chatInput";
 import ChatInitial from "../chatInitial";
 import {ISendMessageProps} from "../../pages/chat";
@@ -13,7 +14,6 @@ export interface IChatAreaProps {
 }
 
 const ChatArea = ({
-                      setMessage,
                       setNewMessage,
                       newMessage,
                       messages,
@@ -24,6 +24,7 @@ const ChatArea = ({
 
     const {activeChat, message} = useChatStore();
     const {isDarkMode} = useThemeStore();
+
 
 
 
@@ -42,6 +43,7 @@ const ChatArea = ({
                     <div className="flex space-x-4">
 
                     </div>
+
                 </div>
 
                 {/* Messages */}

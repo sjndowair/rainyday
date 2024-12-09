@@ -1,7 +1,16 @@
 // store.js
 import {create} from "zustand/react";
 
-import {IChatPageState, IThemeStore} from "../types/create-chatPage";
+import {IChatPageState, IThemeStore, IChatPageProps} from "../types/create-chatPage";
+
+
+
+export interface IChatAreaProps {
+    activeChat: string | null;
+    newMessage: string;
+    setActiveChat: (chatId: string | null) => void;
+    setNewMessage: (message: string) => void;
+}
 
 
 const useStore = create((set:any) => ({
@@ -12,27 +21,17 @@ const useStore = create((set:any) => ({
 
 }));
 
-
 const useChatStore = create<IChatPageState>((set) => ({
     activeChat: null,
-    messages: {
-        'Alice': [
-            { id: 1, sender: 'Alice', content: "Hey, hows the weather there?", timestamp: '10:30 AM' },
-            { id: 2, sender: 'You', content: "Its raining cats and dogs!", timestamp: '10:32 AM' },
-        ],
-        'Bob': [
-            { id: 1, sender: 'Bob', content: 'Want to go for a walk in the rain?', timestamp: '11:15 AM' },
-            { id: 2, sender: 'You', content: 'Sure, let me grab my umbrella!', timestamp: '11:17 AM' },
-        ],
+    message: {
+
     },
-
-
 
     setActiveChat: (chat) => set({ activeChat: chat }),
     addMessage: (chat, message) => set((state) => ({
-        messages: {
-            ...state.messages,
-            [chat]: [...(state.messages[chat] || []), message],
+        message: {
+            ...state.message,
+            [chat]: [...(state.message[chat] || []), message],
         },
     })),
 }))

@@ -17,7 +17,6 @@ export interface ISendMessageProps {
     message? : string;
     id? : string;
     createdAt? : string;
-
 }
 
 const MainPage =() => {
