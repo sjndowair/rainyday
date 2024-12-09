@@ -5,7 +5,7 @@ import ChatInitial from "../chatInitial";
 
 const ChatArea = () => {
 
-    const {activeChat,  messages} = useChatStore();
+    const {activeChat,  message} = useChatStore();
     const {isDarkMode} = useThemeStore();
 
 
@@ -27,7 +27,7 @@ const ChatArea = () => {
 
                 {/* Messages */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                    {messages[activeChat]?.map((message) => (
+                    {message[activeChat]?.map((message) => (
                         <div
                             key={message.id}
                             className={`flex ${message.sender === 'You' ? 'justify-end' : 'justify-start'}`}

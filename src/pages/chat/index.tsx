@@ -11,7 +11,7 @@ import Theme from "../../components/theme";
 
 
  const MainPage =() => {
-    const { activeChat, messages, setActiveChat, addMessage } = useChatStore()
+    const { activeChat, message, setActiveChat, addMessage } = useChatStore()
 
     const [newMessage, setNewMessage] = useState('')
 
