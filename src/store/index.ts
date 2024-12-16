@@ -1,17 +1,31 @@
-// store.js
+
 import {create} from "zustand/react";
+import {collection, addDoc, serverTimestamp} from "firebase/firestore"
+import {db, firebaseAuth} from "../constants/firebase-contants"
+import {IChatPageState, IThemeStore} from "../types/create-chatPage";
+import {GoogleAuthProvider, signInWithPopup, User} from "firebase/auth";
 
-import {IChatPageState, IThemeStore, IChatPageProps} from "../types/create-chatPage";
 
 
 
-export interface IChatAreaProps {
-    activeChat: string | null;
-    newMessage: string;
-    setActiveChat: (chatId: string | null) => void;
-    setNewMessage: (message: string) => void;
+interface ChatStore {  activeChat: string | null;
+    setActiveChat: (chat: string | null) => void;
+    addMessage: (content: string, sender: string) => Promise<void>;
 }
 
+
+const useRealChatStore = create<ChatStore>((set) => ({
+    activeChat: null,
+    setActiveChat: (chat) => set({ activeChat: chat }),
+    addMessage: async (content, sender) => {
+        const messagesRef = collection(db, 'messages');
+        await addDoc(messagesRef, {
+            content,
+            sender,
+            timestamp: serverTimestamp(),
+        });
+    },
+}));
 
 const useStore = create((set:any) => ({
     modalState: false,
@@ -23,24 +37,34 @@ const useStore = create((set:any) => ({
 
 const useChatStore = create<IChatPageState>((set) => ({
     activeChat: null,
-    message: {
-
-    },
+    messages: {},
 
     setActiveChat: (chat) => set({ activeChat: chat }),
     addMessage: (chat, message) => set((state) => ({
-        message: {
-            ...state.message,
-            [chat]: [...(state.message[chat] || []), message],
+        messages: {
+            ...state.messages,
+            [chat]: [...(state.messages[chat] || []), message],
         },
     })),
-}))
+}));
 
 
+interface IAuthStoreProps {
+    user: User | null;
+    setUser: (user: User | null) => void;
+    signIn:  (email: string, password: string) => Promise<void>;
+    signOut: () => Promise<void>;
+    signInWithGoogle: () => Promise<void>;
+}
 
 const useThemeStore = create<IThemeStore>((set) => ({
     isDarkMode: true,
     toggleTheme: () => set((props) => ({isDarkMode: !props.isDarkMode}))
-}))
+}));
 
-export {useStore, useChatStore, useThemeStore};
+
+;
+
+
+
+export {useStore, useChatStore, useThemeStore, useRealChatStore};
