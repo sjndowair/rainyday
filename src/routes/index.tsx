@@ -10,14 +10,12 @@ function App() {
   return (
     <HashRouter>
       <Routes>
-        <Route path={""} element={<Home />}>
-        </Route>
-        <Route path={"/profile"} element={<ProfilePage />} />
-        <Route path={"/login"} element={<LoginPage />} />
-        <Route path={"/home"} element={<Home />} />
+        <Route path={""} element={<Home />} />
         <Route path={"/membership"} element={<Membership />} />
         <Route path={"/mypage"} element={<MyPage />} />
         <Route path={"/chat"} element={<MainPage />} />
+        <Route path={"/profile"} element={<ProfilePage />} />
+        <Route path={"/login"} element={<LoginPage />} />
       </Routes>
     </HashRouter>
   );
