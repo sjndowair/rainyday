@@ -5,7 +5,8 @@ import {useState} from "react";
 //fire base
 import "firebase/firestore"
 import {auth, db, checkIfEmailExists} from "../../constants/firebase-contants";
-import {createUserWithEmailAndPassword ,setPersistence,browserLocalPersistence } from "firebase/auth"
+import {createUserWithEmailAndPassword ,setPersistence,browserLocalPersistence, GoogleAuthProvider, signInWithPopup } from "firebase/auth"
+
 
 //Router
 import {useNavigate} from "react-router-dom";
@@ -44,7 +45,6 @@ const Membership = () => {
   }
 
   const isHandleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
-
     e.preventDefault();
 
     const emailExists= await checkIfEmailExists(isFormData.email);
@@ -71,8 +71,6 @@ console.log("에러박스 상태값", isEmailExists)
     } catch(e) {
       console.log(e);
     }
-
-    if(isLoading) return <Spinner />
 
   };
 
@@ -128,8 +126,8 @@ console.log("에러박스 상태값", isEmailExists)
                           />
                           <Button isLoading={isLoading} login={"Click Me!"}>회원가입</Button>
                       </form>
-                      <div onClick={() => navigate("login")}
-                           className="pt-2 cursor-pointer pt-6 hover: underline-offset-1">이미 회원이신가요?
+                      <div onClick={() => navigate("/login")}
+                           className="pt-2 cursor-pointer pt-6 hover: underline-offset-1 hover:underline">이미 회원이신가요?<br /> 구글 계정 로그인도 가능해요!
                       </div>
                   </MembershipInnerContain>
               </CenterBox>
