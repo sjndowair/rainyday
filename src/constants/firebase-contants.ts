@@ -1,8 +1,16 @@
 import "firebase/firestore"
 import {initializeApp} from "firebase/app"
-import { getAuth, fetchSignInMethodsForEmail } from "firebase/auth";
+import {
+    getAuth,
+    fetchSignInMethodsForEmail,
+    User,
+    createUserWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
+    signInWithEmailAndPassword,
+    GoogleAuthProvider, signInWithPopup
+} from "firebase/auth";
 import {getFirestore, collection} from "firebase/firestore";
-
 
 
 const firebaseConfig = {
@@ -18,9 +26,52 @@ const firebaseConfig = {
 
 
 
- const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
+
+
+
+export const firebaseAuth = {
+    signInWithGoogle: async () => {
+        const provider = new GoogleAuthProvider();
+        try{
+            const userCredetial = await signInWithPopup(auth, provider);
+            return userCredetial.user;
+        } catch (error) {
+            console.error(error);
+        }
+    },
+
+    signUp: async (email: string, password: string): Promise<User | null> => {
+        try{
+            const userCredetial = await createUserWithEmailAndPassword(auth, email, password);
+            return userCredetial.user;
+        } catch(error) {
+            console.error(error);
+            return null;
+        }
+    },
+
+    signIn: async (email: string, password: string): Promise<User | null> => {
+        try{
+            const userCredetial = await signInWithEmailAndPassword(auth, email, password);
+            return userCredetial.user;
+        } catch(error) {
+            console.error(error);
+            return null;
+        }
+    },
+
+    signOut: async ():Promise<void> => {
+        try {
+            await signOut(auth);
+        } catch(error) {
+            console.error(error);
+        }
+    },
+};
+
 
 export const checkIfEmailExists = async (email: string) => {
     try{
@@ -33,6 +84,3 @@ export const checkIfEmailExists = async (email: string) => {
         return false;
     }
 }
-
-
-console.log(checkIfEmailExists)
