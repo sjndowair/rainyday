@@ -10,13 +10,8 @@ const ChatInput = () => {
     const {activeChat, addMessage} = useChatStore();
 
     const handleSendMessage = () => {
-        if (newMessage.trim() && activeChat) {
-            addMessage(activeChat, {
-                id: Date.now(),
-                sender: 'You',
-                content: newMessage.trim(),
-                timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            })
+        if (newMessage.trim() ) {
+            addMessage(newMessage, 'You')
             setNewMessage('')
         }
     }
@@ -29,7 +24,7 @@ const ChatInput = () => {
                 className={ `flex-1  rounded-md py-2 px-4 focus:outline-none ${isDarkMode ? "bg-gray-700 bg-opacity-50" : "bg-gray-100 bg-opacity-70"}`}
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
             />
             <button
                 onClick={handleSendMessage}
