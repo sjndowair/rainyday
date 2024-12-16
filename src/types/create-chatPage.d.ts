@@ -8,10 +8,11 @@ interface IChatPageProps {
 }
 
 export interface IChatPageState {
-    activeChat: string | null
-    message: Record<string, IChatPageProps[]>
-    setActiveChat: (chat: string | null) => void
-    addMessage: (chat: string, message: IChatPageProps) => void
+    activeChat: string | null;
+    messages: Record<string, Message[]>;
+    setActiveChat: (chat: string | null) => void;
+    addMessage: (chat: string, message: Message) => void;
+
 }
 
 

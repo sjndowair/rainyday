@@ -17,5 +17,5 @@ export interface IButtonProps {
   login?: string;
   isLoading?: boolean;
   children? : string;
-  onClickLogOut?: () => void;
+  onClick?: () => void;
 }
