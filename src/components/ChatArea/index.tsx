@@ -1,12 +1,23 @@
 
-import {useChatStore, useThemeStore} from "../../store";
+import {useRealChatStore, useThemeStore} from "../../store";
 import ChatInput from "../chatInput";
 import ChatInitial from "../chatInitial";
+import {useMessages} from "../../apis/useMessages";
+
+
+
 
 const ChatArea = () => {
 
-    const {activeChat,  message} = useChatStore();
+
+
+
+
+    // const {activeChat} = useChatStore();
+    const {activeChat} = useRealChatStore();
     const {isDarkMode} = useThemeStore();
+
+  const {data: messages = []} = useMessages(activeChat)
 
 
     return (
@@ -27,7 +38,7 @@ const ChatArea = () => {
 
                 {/* Messages */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                    {message[activeChat]?.map((message) => (
+                    {messages?.map((message) => (
                         <div
                             key={message.id}
                             className={`flex ${message.sender === 'You' ? 'justify-end' : 'justify-start'}`}
