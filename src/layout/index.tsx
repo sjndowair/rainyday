@@ -34,7 +34,8 @@ const Layout = ({ children }: ILayout) => {
   //   return () => clearInterval(isRemoveRainDropEffect);
   // }, []);
   return (
-           <Member>
+           // <Member>
+      <>
           <Header />
           <Theme >
             {isModalState && <Noti />}
@@ -45,7 +46,8 @@ const Layout = ({ children }: ILayout) => {
             <main onClick={isCloseModal}>{children}</main>
           </Theme>
           <Footer />
-        </Member>
+      </>
+        // </Member>
 
   );
 };
