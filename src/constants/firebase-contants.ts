@@ -10,7 +10,7 @@ import {
     signInWithEmailAndPassword,
     GoogleAuthProvider, signInWithPopup
 } from "firebase/auth";
-import {getFirestore, collection} from "firebase/firestore";
+import {getFirestore, addDoc, collection, query, where, getDocs} from "firebase/firestore";
 
 
 const firebaseConfig = {
@@ -25,12 +25,38 @@ const firebaseConfig = {
 
 
 
-
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 
+// console.log(db)
 
+const [name, age] = ["rlawodnjs", 27];
+
+const addData = async () => {
+    await addDoc(collection(db, "user"), {
+        user_name: name,
+        user_age: age
+    });
+};
+
+const searchData = async () => {
+    const q = query(collection(db, "user"))
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => doc.data());
+};
+
+// 데이터 추가 후 검색 및 출력
+// addData().then(() => {
+//     searchData().then(results => {
+//         console.log("검색 결과:", results);
+//         results.forEach(user => {
+//             console.log("사용자 이름:", user.user_name);
+//             console.log("사용자 나이:", user.user_age);
+//             console.log(user)
+//         });
+//     });
+// });
 
 export const firebaseAuth = {
     signInWithGoogle: async () => {
@@ -84,3 +110,4 @@ export const checkIfEmailExists = async (email: string) => {
         return false;
     }
 }
+
