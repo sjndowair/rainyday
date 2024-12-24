@@ -6,11 +6,11 @@ import {
     User,
     createUserWithEmailAndPassword,
     signOut,
-    onAuthStateChanged,
     signInWithEmailAndPassword,
     GoogleAuthProvider, signInWithPopup
 } from "firebase/auth";
-import {getFirestore, addDoc, collection, query, where, getDocs} from "firebase/firestore";
+import {getFirestore} from "firebase/firestore";
+import {getStorage} from "firebase/storage";
 
 
 const firebaseConfig = {
@@ -28,35 +28,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
+export const storage = getStorage(app);
 
-// console.log(db)
 
-const [name, age] = ["rlawodnjs", 27];
 
-const addData = async () => {
-    await addDoc(collection(db, "user"), {
-        user_name: name,
-        user_age: age
-    });
-};
-
-const searchData = async () => {
-    const q = query(collection(db, "user"))
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => doc.data());
-};
-
-// 데이터 추가 후 검색 및 출력
-// addData().then(() => {
-//     searchData().then(results => {
-//         console.log("검색 결과:", results);
-//         results.forEach(user => {
-//             console.log("사용자 이름:", user.user_name);
-//             console.log("사용자 나이:", user.user_age);
-//             console.log(user)
-//         });
-//     });
-// });
 
 export const firebaseAuth = {
     signInWithGoogle: async () => {
