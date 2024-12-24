@@ -1,33 +1,56 @@
 import {useState} from "react";
-import {useMutation} from "@tanstack/react-query";
-import {ref, uploadBytes, getDownloadURL} from "firebase/storage"
-import {storage} from "../../constants/firebase-contants";
+import {db} from "../../constants/firebase-contants"
+import {addDoc, collection, getDoc, doc} from "firebase/firestore";
 
 
 interface IUserStateProps {
     isUserState: any;
 }
 
-// firebase 유료로 인한 임시 기능 of
+
 const UserImage = ({isUserState}:IUserStateProps) => {
-//
-//        const [isFile, setIsFile] = useState<File | null>(null);
-//        const [imageUrl, setImageUrl] = useState<string>('');
-//
-//
-//        const onClickFileChage = (event: React.ChangeEvent<HTMLInputElement>) => {
-//             event.currentTarget.files && setIsFile(event.currentTarget.files[0])
-//        }
-//
-//        const isHandleUpload = async () => {
-//
-//            if(isFile){
-//                const storageRef = ref(storage, `image/${isFile.name}`)
-//                await uploadBytes(storageRef, isFile)
-//                const url = await getDownloadURL(storageRef)
-//                setImageUrl(url)
-//            }
-//        }
+
+    const getBase = (fire: Blob) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(fire);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error)
+        })
+    }
+
+
+    const isSaveImgFireBase = async (imageFlie: Blob) => {
+     try{
+         const getImageBase = await getBase(imageFlie);
+         const docRef = await addDoc(collection(db, "image"), {
+             image: getImageBase,
+             createTime: new Date(),
+         });
+         console.log(docRef);
+      } catch (error) {
+         console.log(error);
+      }
+    }
+
+    const isFetchImgFireBase = async (imageFlie: string) => {
+        try{
+            const docRef =  doc(db, "image", imageFlie);
+            const docSnap = await getDoc(docRef);
+            if(!docSnap.exists()) console.log("이미지가 존재하지않습니다.")
+            if(docSnap.exists()) {
+                const imageDocSnap = docSnap.data().image;
+                return imageDocSnap
+            }
+
+        } catch(error){
+             console.log(error)
+        }
+    }
+
+
+
+
 
     return (
         <div className={`relative`}>
