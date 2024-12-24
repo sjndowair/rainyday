@@ -95,15 +95,24 @@ const [isUserState, setIsUserState] = useState(USER);
             `}>
 
                 <ul className={`flex flex-col py-6 `}>
-                    {!isUserState ?  (NO_SIGN_USER.map((e, i) => (
-                            <li className={`flex gap-3 mx-5 pl-2 transition-all duration-200 ease-in 
-                        hover:cursor-pointer hover:bg-purple-300 
-                        hover:text-purple-700 rounded-md hover:bg-opacity-20 py-5 `} key={i} onClick={() => onClickUserItem(e.key)}><span>{e.icon} </span> <span>{e.key}</span></li>
-                        ))) : (SIGN_IN.map((e, i) => (
+                    {isUserState && (
+                        <div className={`shadow-purple-500 shadow-sm mx-3 pl-5 pt-3 m flex justify-center mb-3 flex-col gap-1 pb-5 bg-purple-500 rounded-xl bg-opacity-40 text-purple-900`}>
+                            <li>어서오세요 <span className={`text-xl`}>{isUserState?.displayName}</span> 님</li>
+                         <li>{isUserState?.email}</li>
+                        </div>
+                    )}
+                    {!isUserState ? (NO_SIGN_USER.map((e, i) => (
                         <li className={`flex gap-3 mx-5 pl-2 transition-all duration-200 ease-in 
                         hover:cursor-pointer hover:bg-purple-300 
-                        hover:text-purple-700 rounded-md hover:bg-opacity-20 py-5 `} key={i} onClick={() => onClickUserItem(e.key)}><span>{e.icon} </span> <span>{e.key}</span></li>
-                    ))) }
+                        hover:text-purple-700 rounded-md hover:bg-opacity-20 py-5 `} key={i}
+                            onClick={() => onClickUserItem(e.key)}><span>{e.icon} </span> <span>{e.key}</span></li>
+                    ))) : (SIGN_IN.map((e, i) => (
+
+                        <li className={`flex gap-3 mx-5 pl-2 transition-all duration-200 ease-in 
+                        hover:cursor-pointer hover:bg-purple-300 
+                        hover:text-purple-700 rounded-md hover:bg-opacity-20 py-5 `} key={i}
+                            onClick={() => onClickUserItem(e.key)}><span>{e.icon} </span> <span>{e.key}</span></li>
+                    )))}
                 </ul>
             </div>
         </>
