@@ -49,13 +49,6 @@ const useChatStore = create<IChatPageState>((set) => ({
 }));
 
 
-interface IAuthStoreProps {
-    user: User | null;
-    setUser: (user: User | null) => void;
-    signIn:  (email: string, password: string) => Promise<void>;
-    signOut: () => Promise<void>;
-    signInWithGoogle: () => Promise<void>;
-}
 
 const useThemeStore = create<IThemeStore>((set) => ({
     isDarkMode: true,
