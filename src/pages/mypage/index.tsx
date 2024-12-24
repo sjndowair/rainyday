@@ -113,19 +113,11 @@ export default function MyPage() {
 <Layout>
     <Theme>
 
-      {isOpenMessageBox && <div
-          className={`max-w-[500px] w-[100%] rounded-2xl p-10 bg-opacity-70  h-[20rem] bg-purple-400 absolute top-[50%] translate-x-[-50%]  translate-y-[-50%] left-[50%]  z-[10] `}>
-        <label className={`flex flex-col gap-10 justify-around`}>
-        <p className={`font-bold text-2xl`}>자신을 소개 해주세요!</p>
-          <form method="post" onSubmit={onClickSubmit} className={`flex gap-2 w-full`}>
-             <input onChange={isHandleChange} className={`h-[2.5rem]`} placeholder={`입력해주세요`} />
-             <button onKeyDown={() => onClickMessageBox()} onClick={() => onClickMessageBox()} className={`h-[2.5rem]`} type={"button"}>클릭</button>
-          </form>
-        </label>
-      </div>}
+      {isOpenMessageBox &&
+          <PostBox setIsOpenMessageBox={setIsOpenMessageBox} setIsIntroSave={setIsIntroSave} onSubmit={onClickSubmit} onClick={onClickMessageBox} onChange={isHandleChange} onKeyDown={onClickMessageBox} />}
+
 
       <main className="max-w-screen-xl mx-auto p-4">
-        {/* Profile Section */}
         <div
             className={` ${isDarkMode ? "bg-gray-800 bg-opacity-50" : "bg-purple-300 bg-opacity-10 border border-purple-300"}  rounded-lg overflow-hidden backdrop-blur-sm mb-6`}>
           <div
