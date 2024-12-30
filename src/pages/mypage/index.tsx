@@ -12,10 +12,14 @@ import Theme from "../../components/theme";
 import {useThemeStore} from "../../store";
 import {auth, db} from "../../constants/firebase-contants";
 import {onAuthStateChanged, User } from "firebase/auth";
-import {doc, getDoc,  addDoc, setDoc, collection} from "firebase/firestore"
+import {doc, getDoc,  setDoc } from "firebase/firestore"
 import Post from "../../components/post";
 import MyPageButton from "../../atoms/myPageButton";
 import PostBox from "../../components/postBox";
+import UserInfo from "../../components/userInfo";
+import PostCreationForm from "../../components/postCreationForm";
+import UserBackgroundPhoto from "../../components/userBackgroundPhoto";
+
 
 
 
@@ -26,6 +30,7 @@ export default function MyPage() {
   const [isUserState, setIsUserState] = useState<User | null>(null);
   const [isIntroSave, setIsIntroSave] = useState<boolean>(true)
   const [isPrevMessage, setIsPrevMessage] = useState<string>("")
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
   const { isDarkMode } = useThemeStore();
 
@@ -39,11 +44,15 @@ export default function MyPage() {
         isMessage: isIntroSave ? isMessage : isPrevMessage,
         createdAt: new Date(),
       });
-
     } catch (error) {
-     console.log(error)
+     throw new Error(error?.toString());
     }
   };
+
+  const isDirectionModalState = () => {
+    setIsOpenModal((pre) => !pre)
+
+  }
 
 
   const isFetchMessages = async () => {
@@ -53,7 +62,7 @@ export default function MyPage() {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) setIsMessage(docSnap.data().isMessage);
     } catch (error) {
-      console.log(error)
+      throw new Error(error?.toString());
     }
   };
 
@@ -73,8 +82,7 @@ export default function MyPage() {
     e.preventDefault();
     e.stopPropagation();
     setIsOpenMessageBox(false);
-    if (isIntroSave) isSaveMessages();
-    if(!isIntroSave)setIsMessage(isPrevMessage);
+    isIntroSave ? isSaveMessages() : setIsMessage(isPrevMessage);
   };
 
   useEffect(() => {
@@ -99,21 +107,13 @@ export default function MyPage() {
 
       {isOpenMessageBox &&
           <PostBox setIsOpenMessageBox={setIsOpenMessageBox} setIsIntroSave={setIsIntroSave} onSubmit={onClickSubmit} onClick={onClickMessageBox} onChange={isHandleChange} onKeyDown={onClickMessageBox} />}
-
-
       <main className="max-w-screen-xl mx-auto p-4">
         <div
             className={` ${isDarkMode ? "bg-gray-800 bg-opacity-50" : "bg-purple-300 bg-opacity-10 border border-purple-300"}  rounded-lg overflow-hidden backdrop-blur-sm mb-6`}>
-          <div
-              className={`relative h-48 bg-gradient-to-r from-blue-500 to-purple-600 ${isDarkMode ? "bg-gradient-to-r from-blue-500 to-purple-600" : "bg-gradient-to-r from-pink-400 to-purple-400 border border-purple-300"}`}>
-            <button
-                className="absolute top-4 right-4 bg-gray-800 bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400">
-              <Edit className="h-5 w-5"/>
-            </button>
-          </div>
+          <UserBackgroundPhoto isUserState={isUserState!} />
           <div className="relative px-6 pb-6">
          <UserImage isUserState={isUserState} />
-            <div className="pt-20">
+              <div className="pt-20">
               <h2 className="text-2xl font-bold">{isUserState?.displayName || ""}</h2>
               <p className="text-gray-400 flex items-center mt-1">
                 <MapPin className="h-4 w-4 mr-1"/> Email: {isUserState?.email || ""}
@@ -125,13 +125,16 @@ export default function MyPage() {
             </div>
           </div>
         </div>
-        <UserInfo isUserState={isUserState} isMessage={isMessage}></UserInfo>
+        <UserInfo isUserState={isUserState} isMessage={isMessage} />
         <div className={`flex flex-col gap-10 justify-around`}>
-        <MyPageButton value={`게시글 작성하기`} />
+        <MyPageButton onClick={() => isDirectionModalState()} value={`게시글 작성하기`} />
+
         <Post />
         </div>
       </main>
+
     </Theme>
+  {isOpenModal && (<PostCreationForm isOpenModal={isOpenModal} onClick={isDirectionModalState} />)}
 </Layout>
 
   );
