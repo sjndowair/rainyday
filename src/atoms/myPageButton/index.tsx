@@ -1,6 +1,3 @@
-import {type} from "node:os";
-import {Simulate} from "react-dom/test-utils";
-import keyDown = Simulate.keyDown;
 
 
 type TButtonType = "submit" | "reset" | "button";
