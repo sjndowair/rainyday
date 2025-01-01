@@ -12,6 +12,7 @@ import {donutData, lineData} from "../../dummy/dummy-data";
 import { useThemeStore} from "../../store";
 import ChartButton from "../../atoms/chartButton";
 
+
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
 const CHART_TYPE = ["candleStick", "line", "donut" ]
 
@@ -54,7 +55,7 @@ export default function Home() {
                                         labelStyle={{ color: 'white' }}
                                     />
                                     <Legend />
-                                    <Line type="monotone" dataKey="value" stroke="#00C49F" strokeWidth={2} />
+                                    <Line type="monotone" dataKey="value" stroke="#7E22CE" strokeWidth={2} />
                                 </LineChart>
                             </ResponsiveContainer>
 
