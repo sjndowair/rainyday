@@ -4,7 +4,7 @@ import {db} from "../constants/firebase-contants"
 
 
 interface IUserFileBaseImageProps {
-    userId: string | null | undefined;
+    userId: string | null
     collectionData: string;
 
 }
@@ -37,30 +37,30 @@ export const useFireBaseImage = ({userId, collectionData}: IUserFileBaseImagePro
         }
     }
 
-    const isFetchImageFile = async (file: string): Promise<string | null | ArrayBuffer | undefined> => {
-    try{
-        const docRef =  doc(db, collectionData, file)
-        const docSnap = await getDoc(docRef);
-
-        if(!docSnap.exists()) return null;
-
-         return docSnap.data()?.image;
-
-    } catch(error) {
-        throw new Error(error?.toString())
-    }
-    return
+    const isFetchImageFile = async (file: string): Promise<string | null> => {
+        try {
+            const docRef = doc(db, collectionData, file);
+            const docSnap = await getDoc(docRef);
+            if (!docSnap.exists()) return null;
+            const image = docSnap.data()?.image;
+            return image
+        } catch (error) {
+            console.error("Error fetching image file:", error);
+            return null;
+        }
     }
 
     const isUpdateUserImageId = async (imageId: string) => {
      try {
-         if(typeof userId === "string"){
+         if(userId){
              const useRef = doc(db, collectionData, userId);
              await setDoc(useRef, {
                  imageId: imageId,
              })
          }
-         return console.log("userId의 타입이 string이 아닙니다.")
+         console.log(typeof userId, userId);
+         return userId
+
      } catch (error) {
          throw new Error(error?.toString())
      }
@@ -73,18 +73,18 @@ export const useFireBaseImage = ({userId, collectionData}: IUserFileBaseImagePro
     const isHandleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
 
         const file = e.currentTarget?.files?.[0];
-
-        if(userId && file) {
-          const isSaveId = isSaveImageFireBase(file);
-          if(typeof isSaveId === "string"){
-              await isUpdateUserImageId(isSaveId);
-              const isFetchedImage = await isFetchImageFile(isSaveId);
-             typeof isFetchedImage === "string" && isFetchedImage && await setIsUserImage({imageFile: isFetchedImage})
-          }
-
-        }
-
-
+       try{
+           if(userId && file) {
+               const isSaveId = await isSaveImageFireBase(file);
+               if(typeof isSaveId === "string"){
+                   await isUpdateUserImageId(isSaveId);
+                   const isFetchedImage = await isFetchImageFile(isSaveId);
+                   typeof isFetchedImage === "string" && isFetchedImage && await setIsUserImage({imageFile: isFetchedImage})
+               }
+           }
+       } catch(error) {
+           throw new Error(error?.toString())
+       }
     }
 
 
