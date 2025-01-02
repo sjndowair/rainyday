@@ -1,11 +1,10 @@
-import {useState} from "react";
-import { Home, Search, Bell, Mail, User, LogsIcon, MessageCircle } from "lucide-react";
+import { Home,  Bell, User, LogsIcon, MessageCircle } from "lucide-react";
 import {useNavigate} from "react-router-dom";
 import {useStore, useThemeStore} from "../../store";
 
+
 const Navigation = () => {
 
-  const [onClickModal, setOnClickModal] = useState(false);
 const navigate = useNavigate();
 
 const isOpenModal = useStore(state => state.isToggleModal);
@@ -14,13 +13,8 @@ const {isDarkMode} = useThemeStore();
   const isNavigationIcon = [
     {key: "message", icon: <MessageCircle className="h-6 w-6" />, path:"/chat" },
     { key: "home", icon: <Home className="h-6 w-6" />, path:"/"},
-    {
-      key: "search",
-      icon: <LogsIcon className="h-6 w-6"  />,
-      path:"/login",
-    },
     { key: "bell", icon: <Bell className="h-6 w-6"  onClick={isOpenModal}/> },
-    { key: "user", icon: <User className="h-6 w-6" />, path:"/mypage"},
+    { key: "user", icon: <User className="h-6 w-6" onClick={isOpenModal} /> },
 
   ];
 
