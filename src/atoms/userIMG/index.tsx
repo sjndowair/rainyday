@@ -2,7 +2,7 @@ import {useState, useRef, useEffect} from "react";
 import {db} from "../../constants/firebase-contants"
 import {addDoc, collection, getDoc, doc, updateDoc, setDoc} from "firebase/firestore";
 import MyPageButton from "../myPageButton";
-import {useFireBaseImage} from "../../hooks";
+import {useFireBaseImage} from "../../hooks/useFireBaseImage";
 
 interface IUserStateProps {
     isUserState: any;
