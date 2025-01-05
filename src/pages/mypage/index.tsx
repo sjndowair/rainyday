@@ -1,70 +1,49 @@
 
 import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import {
-  Edit,
   MapPin,
   Calendar,
-  PartyPopper
 } from "lucide-react";
 import UserImage from "../../atoms/userIMG";
 import Layout from "../../layout";
 import Theme from "../../components/theme";
 import {useThemeStore} from "../../store";
 import {auth, db} from "../../constants/firebase-contants";
-import {onAuthStateChanged, User } from "firebase/auth";
-import {doc, getDoc,  setDoc } from "firebase/firestore"
+import {onAuthStateChanged } from "firebase/auth";
 import Post from "../../components/post";
 import MyPageButton from "../../atoms/myPageButton";
 import PostBox from "../../components/postBox";
 import UserInfo from "../../components/userInfo";
 import PostCreationForm from "../../components/postCreationForm";
 import UserBackgroundPhoto from "../../components/userBackgroundPhoto";
+import {useFireBaseWriteNoti} from "../../hooks/useFireBaseWriteNoti";
 
 
 
 
 export default function MyPage() {
 
-  const [isMessage, setIsMessage] = useState<string>("");
+
   const [isOpenMessageBox, setIsOpenMessageBox] = useState<boolean>(false);
-  const [isUserState, setIsUserState] = useState<User | null>(null);
-  const [isIntroSave, setIsIntroSave] = useState<boolean>(true)
-  const [isPrevMessage, setIsPrevMessage] = useState<string>("")
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
   const { isDarkMode } = useThemeStore();
 
+  const {isSaveMessages, isFetchMessages,
+    setIsIntroSave, setIsPrevMessage,
+    setIsMessage, isUserState,
+    isMessage, setIsUserState,
+    isPrevMessage, isIntroSave} = useFireBaseWriteNoti({data: "userMessages"});
 
 
-  const isSaveMessages = async () => {
-    if (!isUserState) return;
-    try {
-      await setDoc(doc(db, "userMessages", isUserState?.uid), {
-        userId: isUserState.uid,
-        isMessage: isIntroSave ? isMessage : isPrevMessage,
-        createdAt: new Date(),
-      });
-    } catch (error) {
-     throw new Error(error?.toString());
-    }
-  };
+
+
 
   const isDirectionModalState = () => {
     setIsOpenModal((pre) => !pre)
 
   }
 
-
-  const isFetchMessages = async () => {
-    if (!isUserState) return;
-    try {
-      const docRef = doc(db, "userMessages", isUserState.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) setIsMessage(docSnap.data().isMessage);
-    } catch (error) {
-      throw new Error(error?.toString());
-    }
-  };
 
   const isHandleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
@@ -128,13 +107,11 @@ export default function MyPage() {
         <UserInfo isUserState={isUserState} isMessage={isMessage} />
         <div className={`flex flex-col gap-10 justify-around`}>
         <MyPageButton onClick={() => isDirectionModalState()} value={`게시글 작성하기`} />
-
         <Post />
         </div>
       </main>
-
     </Theme>
-  {isOpenModal && (<PostCreationForm isOpenModal={isOpenModal} onClick={isDirectionModalState} />)}
+  {isOpenModal && (<PostCreationForm isOpenModal={isOpenModal} data={"posts"} onClick={isDirectionModalState} />)}
 </Layout>
 
   );
