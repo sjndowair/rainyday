@@ -13,9 +13,13 @@ export interface ILabelProps {
   label?: string;
 }
 
+
+type TButtonType = "submit" | "button" | "reset" | undefined ;
+
 export interface IButtonProps {
   login?: string;
   isLoading?: boolean;
   children? : string;
+  type?: TButtonType;
   onClick?: () => void;
 }
