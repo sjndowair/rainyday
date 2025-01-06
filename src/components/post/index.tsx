@@ -2,14 +2,12 @@ import { useState } from "react";
 import { ILoadingProps } from "../../types/mainHomepage";
 import { POST_DUMMY_DATA } from "../../dummy/dummy-data";
 import {
-  Heart,
-  Bookmark,
-  Share2,
-  MessageCircle,
+  Heart, Bookmark,
+  Share2, MessageCircle,
   MoreHorizontal,
 } from "lucide-react";
 import {useThemeStore} from "../../store";
-import SkeletonPost from "../../loading/skeleton/skeletonPost";
+
 
 const Post = ({ isLoading }: ILoadingProps) => {
   const [isLikedPosts, setIsLikedPosts] = useState<Set<number>>(new Set());
@@ -34,9 +32,7 @@ const Post = ({ isLoading }: ILoadingProps) => {
   };
   return (
     <div className="space-y-6">
-      {!isLoading ? (
-        <SkeletonPost />
-      ) : (
+
         <>
           {POST_DUMMY_DATA.map((e) => (
             <div
@@ -57,9 +53,6 @@ const Post = ({ isLoading }: ILoadingProps) => {
                   <MoreHorizontal className="h-5 w-5" />
                 </button>
               </div>
-              {e.image && (
-                <img src={e.image} alt="Post content" className="w-full" />
-              )}
               <div className="p-4">
                 <p className="mb-4">{e.content}</p>
                 <div className="flex justify-between mb-2">
@@ -101,9 +94,8 @@ const Post = ({ isLoading }: ILoadingProps) => {
                 </div>
               </div>
             </div>
-          ))}{" "}
+          ))}
         </>
-      )}
     </div>
   );
 };
