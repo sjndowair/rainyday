@@ -1,7 +1,7 @@
 
 import {Edit} from "lucide-react";
 import {useThemeStore} from "../../store";
-import {useFireBaseImage} from "../../hooks";
+import {useFireBaseImage} from "../../hooks/useFireBaseImage";
 import {User} from "firebase/auth"
 import {useEffect} from "react";
 import {doc, getDoc} from "firebase/firestore";
