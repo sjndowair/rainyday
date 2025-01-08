@@ -17,6 +17,8 @@ import UserInfo from "../../components/userInfo";
 import PostCreationForm from "../../components/postCreationForm";
 import UserBackgroundPhoto from "../../components/userBackgroundPhoto";
 import {useFireBaseWriteNoti} from "../../hooks/useFireBaseWriteNoti";
+import {useFireBaseaMessage} from "../../hooks/useFireBaseaMessage"
+
 
 
 
@@ -29,14 +31,8 @@ export default function MyPage() {
 
   const { isDarkMode } = useThemeStore();
 
-  const {isSaveMessages, isFetchMessages,
-    setIsIntroSave, setIsPrevMessage,
-    setIsMessage, isUserState,
-    isMessage, setIsUserState,
-    isPrevMessage, isIntroSave} = useFireBaseWriteNoti({data: "userMessages"});
 
-
-
+const {  isUserState, setIsUserState, isSaveMessages, isFetchMessages, isMessage, setIsMessage, setIsPrevMessage, isPrevMessage, isIntroSave, setIsIntroSave} = useFireBaseaMessage({data: "userMessages"});
 
 
   const isDirectionModalState = () => {
@@ -67,6 +63,7 @@ export default function MyPage() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setIsUserState(currentUser);
+
     });
     return () => unsubscribe();
 
