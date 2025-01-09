@@ -16,8 +16,8 @@ import PostBox from "../../components/postBox";
 import UserInfo from "../../components/userInfo";
 import PostCreationForm from "../../components/postCreationForm";
 import UserBackgroundPhoto from "../../components/userBackgroundPhoto";
-import {useFireBaseWriteNoti} from "../../hooks/useFireBaseWriteNoti";
-import {useFireBaseaMessage} from "../../hooks/useFireBaseaMessage"
+import {useFireBaseData} from "../../hooks/useFireBaseWriteNoti";
+
 
 
 
@@ -32,7 +32,12 @@ export default function MyPage() {
   const { isDarkMode } = useThemeStore();
 
 
-const {  isUserState, setIsUserState, isSaveMessages, isFetchMessages, isMessage, setIsMessage, setIsPrevMessage, isPrevMessage, isIntroSave, setIsIntroSave} = useFireBaseaMessage({data: "userMessages"});
+  const {isUser, setIsUser, isMessage: message,
+    setIsMessage: setMessage, isFetchData: fetchMessage, isSaveData: isSaveMessages,
+    isSaveMessage,  setIsSaveMessage, isBeforeMessage, setIsBeforeMessage
+
+  } = useFireBaseData({collectionName: "message", dataType:"message"})
+
 
 
   const isDirectionModalState = () => {
@@ -40,29 +45,33 @@ const {  isUserState, setIsUserState, isSaveMessages, isFetchMessages, isMessage
 
   }
 
-
   const isHandleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
-    setIsMessage(value);
+    setMessage(value);
   };
 
 
   const onClickMessageBox = () => {
-    setIsPrevMessage(isMessage);
+    setIsBeforeMessage(message);
     setIsOpenMessageBox((pre) => !pre);
   };
 
 
-  const onClickSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onClickSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
     setIsOpenMessageBox(false);
-    isIntroSave ? isSaveMessages() : setIsMessage(isPrevMessage);
+    if (isSaveMessage) {
+      await isSaveMessages(new Blob());
+      await fetchMessage();
+    } else {
+      setMessage(isBeforeMessage);
+    }
   };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setIsUserState(currentUser);
+      setIsUser(currentUser);
 
     });
     return () => unsubscribe();
@@ -70,11 +79,7 @@ const {  isUserState, setIsUserState, isSaveMessages, isFetchMessages, isMessage
   }, []);
 
 
-  useEffect(() => {
-    if (isUserState) {
-      isFetchMessages();
-    }
-  }, [isUserState]);
+
 
   return (
 
@@ -82,26 +87,26 @@ const {  isUserState, setIsUserState, isSaveMessages, isFetchMessages, isMessage
     <Theme>
 
       {isOpenMessageBox &&
-          <PostBox setIsOpenMessageBox={setIsOpenMessageBox} setIsIntroSave={setIsIntroSave} onSubmit={onClickSubmit} onClick={onClickMessageBox} onChange={isHandleChange} onKeyDown={onClickMessageBox} />}
+          <PostBox setIsOpenMessageBox={setIsOpenMessageBox} setIsIntroSave={setIsSaveMessage} onSubmit={onClickSubmit} onClick={onClickMessageBox} onChange={isHandleChange} onKeyDown={onClickMessageBox} />}
       <main className="max-w-screen-xl mx-auto p-4">
         <div
             className={` ${isDarkMode ? "bg-gray-800 bg-opacity-50" : "bg-purple-300 bg-opacity-10 border border-purple-300"}  rounded-lg overflow-hidden backdrop-blur-sm mb-6`}>
-          <UserBackgroundPhoto isUserState={isUserState!} />
+          <UserBackgroundPhoto isUserState={isUser!} />
           <div className="relative px-6 pb-6">
-         <UserImage isUserState={isUserState} />
+         <UserImage isUserState={isUser} />
               <div className="pt-20">
-              <h2 className="text-2xl font-bold">{isUserState?.displayName || ""}</h2>
+              <h2 className="text-2xl font-bold">{isUser?.displayName || ""}</h2>
               <p className="text-gray-400 flex items-center mt-1">
-                <MapPin className="h-4 w-4 mr-1"/> Email: {isUserState?.email || ""}
+                <MapPin className="h-4 w-4 mr-1"/> Email: {isUser?.email || ""}
               </p>
               <p className="text-gray-400 flex items-center mt-1">
-                <Calendar className="h-4 w-4 mr-1"/> create ID: {isUserState?.metadata.creationTime || ""}
+                <Calendar className="h-4 w-4 mr-1"/> create ID: {isUser?.metadata.creationTime || ""}
               </p>
               <MyPageButton value={`소개글 입력하기`} onClick={onClickMessageBox} />
             </div>
           </div>
         </div>
-        <UserInfo isUserState={isUserState} isMessage={isMessage} />
+        <UserInfo isUserState={isUser} isMessage={message} />
         <div className={`flex flex-col gap-10 justify-around`}>
         <MyPageButton onClick={() => isDirectionModalState()} value={`게시글 작성하기`} />
         <Post />
