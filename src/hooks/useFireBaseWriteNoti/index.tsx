@@ -6,90 +6,107 @@ import {auth, db} from "../../constants/firebase-contants";
 
 
 interface IUseFireBaseWriteNotiProps {
-    userId?: string | null;
-    data?: string | null
-}
-
-interface IIsFetchContentprops {
-    id: string;
-    createdAt: Date;
-    [key: string]: any
+    collectionName: string | null;
+    dataType?: string | null
 }
 
 
-export const useFireBaseWriteNoti = ({data}:IUseFireBaseWriteNotiProps) => {
 
-    const [isIntroSave, setIsIntroSave] = useState<boolean>(true);
+export const useFireBaseData = ({collectionName, dataType}:IUseFireBaseWriteNotiProps) => {
+
+
+
+    const [isUser, setIsUser] = useState<User | null>(null);
     const [isMessage, setIsMessage] = useState<string>("");
-
     const [isTitle, setIsTitle] = useState<string>("");
-    const [isContent, setIsContent] = useState<string>("");
+    const [isUserName, setIsUserName] = useState<string>("");
+    const [isSaveMessage, setIsSaveMessage] = useState<boolean>(true);
+    const [isBeforeMessage, setIsBeforeMessage] = useState<string>("");
+    const [isImage, setIsImage] = useState<{ imageFile: string | null | undefined }>({imageFile: null});
+    const [isCreateTime, setIsCreateTime] = useState<string>("");
 
 
-    const [isUserState, setIsUserState] = useState<null | User>(null);
-    const [isPrevMessage, setIsPrevMessage] = useState<string>("");
 
-
-    const isSaveNoti = async () => {
-        if(!isUserState) return
-        try{
-            if(typeof data === "string"){
-                await addDoc(collection(db, data), {
-                    title: isTitle,
-                    content: isContent,
-                    createdAt: new Date().toISOString(),
-                    name: isUserState.displayName,
-                    user: isUserState.uid
-                })
-            }
-        }catch (error){
-            throw new Error(error?.toString())
-        }
-
-    }
-
-    const isFetchContent = async (): Promise<IIsFetchContentprops[] | undefined> => {
-        if(typeof data === "string"){
-            const q = await query(collection(db, data), orderBy("createAt", "desc"))
-            const querySnapshot = await getDocs(q)
-            const posts: IIsFetchContentprops[] = []
-                querySnapshot.forEach(doc => {
-                    posts.push({id: doc.id, ...doc.data()} as IIsFetchContentprops)
-                })
-            return posts;
-        }
-    }
-
-    const isSaveMessages =  async () => {
-     if(!isUserState) return
-        try{
-           if(typeof data === "string"){
-               await setDoc(doc(db, data, isUserState?.uid), {
-                   userId: isUserState?.displayName,
-                   isMessage: isIntroSave ? isMessage: isPrevMessage,
-                   createdAt: new Date().getDay().toString(),
+    const isGetImageBase = (fire: Blob): Promise<string | ArrayBuffer | null> => {
+               return new Promise((resolve, reject) => {
+                   const reader = new FileReader();
+                   reader.readAsDataURL(fire);
+                   reader.onload = () => resolve(reader.result);
+                   reader.onerror = (error) => reject(error)
                })
+    }
+
+
+    const isSaveData = async (imageFile :Blob) => {
+        if(!isUser)return
+        if(typeof collectionName === "string"){
+
+        try{
+           switch(dataType){
+               case "message" :
+               await setDoc(doc(db, collectionName, isUser?.uid), {
+                   createdAt: new Date().toISOString(),
+                   message: isSaveMessage ? isMessage : isBeforeMessage,
+                   user: isUser?.displayName,
+               })
+                 break;
+               case "post":
+                const isGetImage = await isGetImageBase(imageFile)
+                await addDoc(collection(db, collectionName), {
+                    title: isTitle,
+                    createdAt: new Date().toISOString(),
+                    message: isMessage,
+                    photo: isGetImage,
+                    user: isUser?.displayName,
+                })
+                   break
            }
         }catch (error){
-         throw new Error(error?.toString())
+            throw new Error(error?.toString());
+        }
         }
     }
 
-
-    const isFetchMessages = async () => {
-        if(!isUserState) return
+    console.log(isMessage)
+    const isFetchData = async () => {
+        if(!isUser)return
+        if(typeof collectionName === "string"){
         try{
-         if(typeof data === "string"){
-             const docSnap = await getDoc(doc(db, data, isUserState?.uid))
-             if(docSnap.exists()) setIsMessage(docSnap.data().isMessage);
-         }
-        }catch(error){
-            throw new Error(error?.toString())
+            switch(dataType){
+                case "message" :
+                     const docSnap = await getDoc(doc(db, collectionName, isUser?.uid))
+                    if(docSnap.exists()){
+                        setIsMessage(docSnap.data().message)
+                    }
+                    break
+                case "post":
+                    const data = await getDocs(query(collection(db, collectionName, isUser?.uid), orderBy("createdAt", "desc")))
+
+                      data.forEach((docSnap) => {
+                          const isData = docSnap.data()
+                          setIsMessage(isData.message)
+                          setIsTitle(isData.title)
+                          setIsUserName(isData.user)
+                          setIsCreateTime(isData.createAt)
+                          setIsImage(isData.photo)
+                      })
+
+            }
+        }catch (error){
+            throw new Error(error?.toString());
+        }
         }
     }
 
+  useEffect(() => {
+      if(isUser){
+          isFetchData();
+      }
+  },[isUser])
 
 
-    return {isSaveMessages, isFetchMessages, setIsIntroSave, setIsPrevMessage, setIsMessage, isUserState, isMessage, setIsUserState, isPrevMessage, isIntroSave,setIsContent, setIsTitle, isContent, isTitle, isSaveNoti, isFetchContent}
+    return {isFetchData, isSaveData, isMessage, setIsMessage, isUser,
+        setIsUser, isBeforeMessage, setIsBeforeMessage, isUserName, setIsUserName, setIsSaveMessage,
+        isTitle, setIsTitle, isSaveMessage,  isImage, setIsImage, isCreateTime, setIsCreateTime}
 
 }
