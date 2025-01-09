@@ -19,10 +19,9 @@ const ChartButton = ({value ,type ,setIsActiveChart, isActiveChart}: IChartButto
 
     return (
         <>
-                <button onClick={() => setIsActiveChart(type)}
-
-                        className={`px-3 py-1 rounded ${isDarkMode ?  'bg-blue-600' : "bg-purple-500"} bg-opacity-70 hover:bg-opacity-90`}
-                >{type?.charAt(0).toUpperCase() + type!.slice(1)}</button>
+                <button onClick={() => setIsActiveChart(type)} className={`px-3 py-3 rounded ${isDarkMode ?  'bg-blue-600' : "text-white font-semibold  bg-purple-500"} bg-opacity-70 hover:bg-opacity-90`}>
+                    {type?.charAt(0).toUpperCase() + type!.slice(1)}
+                </button>
         </>
     )
 
