@@ -13,7 +13,7 @@ const UserInfo  = ({isMessage, isUserState}: IUserInfoProps) => {
 
     const { isDarkMode } = useThemeStore();
 
-
+console.log(isMessage)
 
     return (
         <div
