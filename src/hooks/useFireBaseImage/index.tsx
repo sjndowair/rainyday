@@ -1,6 +1,6 @@
 import {addDoc, doc, getDoc, collection, setDoc} from "firebase/firestore";
 import {Ref, useRef, useState} from "react";
-import {db} from "../constants/firebase-contants"
+import {db} from "../../constants/firebase-contants"
 
 
 interface IUserFileBaseImageProps {
@@ -11,7 +11,7 @@ interface IUserFileBaseImageProps {
 
 export const useFireBaseImage = ({userId, collectionData}: IUserFileBaseImageProps ) => {
 
-    const [isUserImage, setIsUserImage] = useState<{imageFile:   null | string | undefined  } >({imageFile: null});
+    const [isUserImage, setIsUserImage] = useState<{imageFile: null | string | undefined   } >({imageFile: null});
     const isFileInputRef = useRef<HTMLInputElement>(null);
 
     const isGetBase = (fire: Blob): Promise<string | ArrayBuffer | null> => {
@@ -53,12 +53,11 @@ export const useFireBaseImage = ({userId, collectionData}: IUserFileBaseImagePro
     const isUpdateUserImageId = async (imageId: string) => {
      try {
          if(userId){
-             const useRef = doc(db, collectionData, userId);
+             const useRef = await doc(db, collectionData, userId);
              await setDoc(useRef, {
                  imageId: imageId,
              })
          }
-         console.log(typeof userId, userId);
          return userId
 
      } catch (error) {
