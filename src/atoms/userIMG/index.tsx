@@ -3,15 +3,21 @@ import {db} from "../../constants/firebase-contants"
 import {addDoc, collection, getDoc, doc, updateDoc, setDoc} from "firebase/firestore";
 import MyPageButton from "../myPageButton";
 import {useFireBaseImage} from "../../hooks/useFireBaseImage";
+import {User} from "firebase/auth"
 
 interface IUserStateProps {
-    isUserState: any;
+    isUserState: User | null
+    isUserImage: any;
+    setIsUserImage: any;
+    isHandleImageChange: any;
+    isFetchImageFile: any;
+    isFileInputRef: any;
+    isHandleEditClick: any;
+
 }
 
-const UserImage = ({isUserState}:IUserStateProps) => {
+const UserImage = ({isHandleEditClick, isFileInputRef,isFetchImageFile ,isHandleImageChange, isUserState, isUserImage, setIsUserImage}:IUserStateProps) => {
 
-    const user = isUserState?.uid
-   const {isUserImage,setIsUserImage,isHandleImageChange,isFetchImageFile,isFileInputRef,isHandleEditClick} = useFireBaseImage({userId:user || null, collectionData: "users" })
 
 
 

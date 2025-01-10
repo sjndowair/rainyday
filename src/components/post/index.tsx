@@ -7,11 +7,28 @@ import {
   MoreHorizontal,
 } from "lucide-react";
 import {useThemeStore} from "../../store";
+import {User} from "firebase/auth";
 
 
-const Post = ({ isLoading }: ILoadingProps) => {
+interface IPostProps {
+  isUser?: User | null;
+  isLoading?: boolean;
+  isCreateTime?:string;
+  isTitle?:string;
+  postMessage?: string;
+  isUserImage?: {
+    imageFile: string | null | undefined;
+  }
+
+}
+
+
+const Post = ({ isUser, isLoading, isCreateTime, isTitle, isUserImage, postMessage }:IPostProps) => {
   const [isLikedPosts, setIsLikedPosts] = useState<Set<number>>(new Set());
   const [isBookMark, setIsBookMark] = useState<Set<number>>(new Set());
+
+  console.log(typeof isUserImage)
+  console.dir(isUserImage);
 
   const {isDarkMode} = useThemeStore();
 
