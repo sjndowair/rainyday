@@ -9,9 +9,11 @@ interface IPostCreationFormProps {
     isOpenModal?: boolean;
     onSubmit?: (title: string, content: string) => Promise<void>;
     data?: string
+    isHandleChage?: (e: React.ChangeEvent<HTMLInputElement>) => void
+    onClickPostSubmit?: (e: React.FormEvent<HTMLFormElement>) => Promise<void>
 }
 
-const PostCreationForm = ({onClick, isOpenModal, data}: IPostCreationFormProps) => {
+const PostCreationForm = ({onClick, isOpenModal, data, isHandleChage, onClickPostSubmit}: IPostCreationFormProps) => {
 
 
 
@@ -34,8 +36,9 @@ const PostCreationForm = ({onClick, isOpenModal, data}: IPostCreationFormProps) 
              className={`bg-purple-500 bg-opacity-50 w-[100%] min-h-screen h-[1300px] absolute top-0 left-0 z-[1] `}>
             <div
                 onClick={onClickInnerBox}
+
                 className={`w-[100%] px-[5rem] pt-[4rem] max-w-[900px] h-[40rem] bg-white absolute top-[7rem] left-1/2 transform -translate-x-1/2 -translate-y-1/2"  z-[9999] rounded-2xl`}>
-                <Form >
+                <Form isHandleSubmit={onClickPostSubmit} >
                     <label>
                         <h3 className={`text-[1.25rem] text-purple-500 pb-3 font-bold`}>제목</h3>
                         <InputBox
@@ -47,6 +50,7 @@ const PostCreationForm = ({onClick, isOpenModal, data}: IPostCreationFormProps) 
                     <label>
                         <h3 className={`py-7 text-[1.25rem] mt-3 text-purple-500 font-bold`}>글쓰기</h3>
                         <textarea
+
                             className={`bg-purple-100 rounded-xl bg-opacity-90 w-full p-5 h-[15rem]`}
 
 
