@@ -38,18 +38,22 @@ export default function MyPage() {
 
   } = useFireBaseData({collectionName: "message", dataType:"message"})
 
+  const {isUserImage,setIsUserImage,isHandleImageChange,isFetchImageFile,isFileInputRef,isHandleEditClick} = useFireBaseImage({userId: isUser?.uid || null , collectionData: "users" })
+
+const {isTitle, isCreateTime, isMessage: postMessage, setIsCreateTime, isFetchData: fetchPost } = useFireBaseData({collectionName: "post", dataType:"post"})
 
 
-  const isDirectionModalState = () => {
-    setIsOpenModal((pre) => !pre)
-
-  }
 
   const isHandleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
     setMessage(value);
   };
 
+
+  const onClickPostBox = () => {
+    setIsOpenModal((pre) => !pre)
+
+  }
 
   const onClickMessageBox = () => {
     setIsBeforeMessage(message);
