@@ -37,7 +37,7 @@ export const useFireBaseData = ({collectionName, dataType}:IUseFireBaseWriteNoti
     }
 
 
-    const isSaveData = async (imageFile :Blob) => {
+    const isSaveData = async () => {
         if(!isUser)return
         if(typeof collectionName === "string"){
 
@@ -51,12 +51,12 @@ export const useFireBaseData = ({collectionName, dataType}:IUseFireBaseWriteNoti
                })
                  break;
                case "post":
-                const isGetImage = await isGetImageBase(imageFile)
+                // const isGetImage = await isGetImageBase(imageFile)
                 await addDoc(collection(db, collectionName), {
                     title: isTitle,
                     createdAt: new Date().toISOString(),
                     message: isMessage,
-                    photo: isGetImage,
+                    // photo: isGetImage,
                     user: isUser?.displayName,
                 })
                    break
