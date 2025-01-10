@@ -48,8 +48,10 @@ const Post = ({ isUser, isLoading, isCreateTime, isTitle, isUserImage, postMessa
     });
   };
   return (
-    <div className="space-y-6">
 
+
+
+    <div className="space-y-6">
         <>
           {POST_DUMMY_DATA.map((e) => (
             <div
@@ -58,54 +60,55 @@ const Post = ({ isUser, isLoading, isCreateTime, isTitle, isUserImage, postMessa
             >
               <div className="p-4 flex items-center">
                 <img
-                  src={e.avatar}
-                  alt={e.username}
+                  src={isUserImage?.imageFile || null || undefined}
+                  alt={`${isUser?.displayName || null} 의 이미지`}
                   className="w-10 h-10 rounded-full mr-3"
                 />
                 <div>
-                  <span className="font-semibold">{e.username}</span>
-                  <p className="text-xs text-gray-400">Wearing: {e.outfit}</p>
+                  <span className="font-semibold">{isUser?.displayName || null}</span>
+                  <p className="text-xs text-gray-400">createAt: {isCreateTime || null}</p>
                 </div>
                 <button className="ml-auto focus:outline-none">
                   <MoreHorizontal className="h-5 w-5" />
                 </button>
               </div>
               <div className="p-4">
-                <p className="mb-4">{e.content}</p>
+                <h3 className="mb-4 font-semibold text-[1.25rem]">{isTitle || null}</h3>
+                <p className="mb-4">{postMessage || null}</p>
                 <div className="flex justify-between mb-2">
                   <div className="flex space-x-4">
                     <button
-                      onClick={() => isToggleLiked(e.id)}
-                      className="flex items-center space-x-1 focus:outline-none group"
+                        onClick={() => isToggleLiked(e.id)}
+                        className="flex items-center space-x-1 focus:outline-none group"
                     >
                       <Heart
-                        className={`h-5 w-5 ${
-                          isLikedPosts.has(e.id)
-                            ? "text-red-500 fill-current"
-                            : "group-hover:text-red-500 transition-colors"
-                        }`}
+                          className={`h-5 w-5 ${
+                              isLikedPosts.has(e.id)
+                                  ? "text-red-500 fill-current"
+                                  : "group-hover:text-red-500 transition-colors"
+                          }`}
                       />
                       <span>{e.likes}</span>
                     </button>
                     <button className="flex items-center space-x-1 focus:outline-none group">
-                      <MessageCircle className="h-5 w-5 group-hover:text-blue-400 transition-colors" />
+                      <MessageCircle className="h-5 w-5 group-hover:text-blue-400 transition-colors"/>
                       <span>{e.comments}</span>
                     </button>
                     <button className="flex items-center space-x-1 focus:outline-none group">
-                      <Share2 className="h-5 w-5 group-hover:text-green-400 transition-colors" />
+                      <Share2 className="h-5 w-5 group-hover:text-green-400 transition-colors"/>
                       <span>{e.shares}</span>
                     </button>
                   </div>
                   <button
-                    onClick={() => isToggleBookMark(e.id)}
-                    className="focus:outline-none"
+                      onClick={() => isToggleBookMark(e.id)}
+                      className="focus:outline-none"
                   >
                     <Bookmark
-                      className={`h-5 w-5 ${
-                        isBookMark.has(e.id)
-                          ? "text-yellow-500 fill-current"
-                          : "hover:text-yellow-500 transition-colors"
-                      }`}
+                        className={`h-5 w-5 ${
+                            isBookMark.has(e.id)
+                                ? "text-yellow-500 fill-current"
+                                : "hover:text-yellow-500 transition-colors"
+                        }`}
                     />
                   </button>
                 </div>
