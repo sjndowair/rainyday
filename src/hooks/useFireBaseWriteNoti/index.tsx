@@ -6,13 +6,11 @@ import {auth, db} from "../../constants/firebase-contants";
 
 
 interface IUseFireBaseWriteNotiProps {
-    collectionName: string | null;
+    collectionName?: string | null;
     dataType?: string | null
 }
 
-
-
-export const useFireBaseData = ({collectionName, dataType}:IUseFireBaseWriteNotiProps) => {
+export const useFirebaseData = ({collectionName, dataType}:IUseFireBaseWriteNotiProps) => {
 
 
 
@@ -25,15 +23,24 @@ export const useFireBaseData = ({collectionName, dataType}:IUseFireBaseWriteNoti
     const [isImage, setIsImage] = useState<{ imageFile: string | null | undefined }>({imageFile: null});
     const [isCreateTime, setIsCreateTime] = useState<string>("");
 
+    const [isPosts, setIsPosts] = useState<Array<{
+        id: string;
+        title: string;
+        message: string;
+        user: string;
+        createdAt: string;
+        photo?: string;
+    }>>([]);
+
 
 
     const isGetImageBase = (fire: Blob): Promise<string | ArrayBuffer | null> => {
-               return new Promise((resolve, reject) => {
-                   const reader = new FileReader();
-                   reader.readAsDataURL(fire);
-                   reader.onload = () => resolve(reader.result);
-                   reader.onerror = (error) => reject(error)
-               })
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(fire);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error)
+        })
     }
 
 
@@ -41,29 +48,29 @@ export const useFireBaseData = ({collectionName, dataType}:IUseFireBaseWriteNoti
         if(!isUser)return
         if(typeof collectionName === "string"){
 
-        try{
-           switch(dataType){
-               case "message" :
-               await setDoc(doc(db, collectionName, isUser?.uid), {
-                   createdAt: new Date().toISOString(),
-                   message: isSaveMessage ? isMessage : isBeforeMessage,
-                   user: isUser?.displayName,
-               })
-                 break;
-               case "post":
-                // const isGetImage = await isGetImageBase(imageFile)
-                await addDoc(collection(db, collectionName), {
-                    title: isTitle,
-                    createdAt: new Date().toISOString(),
-                    message: isMessage,
-                    // photo: isGetImage,
-                    user: isUser?.displayName,
-                })
-                   break
-           }
-        }catch (error){
-            throw new Error(error?.toString());
-        }
+            try{
+                switch(dataType){
+                    case "message" :
+                        await setDoc(doc(db, collectionName, isUser?.uid), {
+                            createdAt: new Date().toISOString(),
+                            message: isSaveMessage ? isMessage : isBeforeMessage,
+                            user: isUser?.displayName,
+                        })
+                        break;
+                    case "post":
+                        // const isGetImage = await isGetImageBase(imageFile)
+                        await addDoc(collection(db, collectionName), {
+                            title: isTitle,
+                            createdAt: new Date().toISOString(),
+                            message: isMessage,
+                            // photo: isGetImage,
+                            user: isUser?.displayName,
+                        })
+                        break
+                }
+            }catch (error){
+                throw new Error(error?.toString());
+            }
         }
     }
 
@@ -71,38 +78,37 @@ export const useFireBaseData = ({collectionName, dataType}:IUseFireBaseWriteNoti
     const isFetchData = async () => {
         if(!isUser)return
         if(typeof collectionName === "string"){
-        try{
-            switch(dataType){
-                case "message" :
-                     const docSnap = await getDoc(doc(db, collectionName, isUser?.uid))
-                    if(docSnap.exists()){
-                        setIsMessage(docSnap.data().message)
-                    }
-                    break
-                case "post":
-                    const data = await getDocs(query(collection(db, collectionName, isUser?.uid), orderBy("createdAt", "desc")))
+            try{
+                switch(dataType){
+                    case "message" :
+                        const docSnap = await getDoc(doc(db, collectionName, isUser?.uid))
+                        if(docSnap.exists()){
+                            setIsMessage(docSnap.data().message)
+                        }
+                        break
+                    case "post":
+                        const querySnapshot = await getDocs(query(collection(db, collectionName, isUser?.uid), orderBy("createdAt", "desc")))
 
-                      data.forEach((docSnap) => {
-                          const isData = docSnap.data()
-                          setIsMessage(isData.message)
-                          setIsTitle(isData.title)
-                          setIsUserName(isData.user)
-                          setIsCreateTime(isData.createAt)
-                          setIsImage(isData.photo)
-                      })
+                        // const data = querySnapshot.docs.map((doc) => {
+                        //     id: isUser?.id,
+                        //         ...doc?.data(),
+                        // })
 
+
+
+
+                }
+            }catch (error){
+                throw new Error(error?.toString());
             }
-        }catch (error){
-            throw new Error(error?.toString());
-        }
         }
     }
 
-  useEffect(() => {
-      if(isUser){
-          isFetchData();
-      }
-  },[isUser])
+    useEffect(() => {
+        if(isUser){
+            isFetchData();
+        }
+    },[isUser])
 
 
     return {isFetchData, isSaveData, isMessage, setIsMessage, isUser,
@@ -110,3 +116,5 @@ export const useFireBaseData = ({collectionName, dataType}:IUseFireBaseWriteNoti
         isTitle, setIsTitle, isSaveMessage,  isImage, setIsImage, isCreateTime, setIsCreateTime}
 
 }
+
+
