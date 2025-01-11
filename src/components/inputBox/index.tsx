@@ -5,12 +5,10 @@ import { ILabelProps } from "../../types/create-membership";
 import { InputHTMLAttributes } from "react";
 import {useThemeStore} from "../../store";
 
-export interface IInputBoxProps
-  extends ILabelProps,
+export interface IInputBoxProps extends ILabelProps,
     InputHTMLAttributes<HTMLInputElement> {
   isHandleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-
-
+  name?: string;
 
 }
 const InputBox = ({
