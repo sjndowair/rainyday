@@ -9,7 +9,7 @@ import {db} from "../../constants/firebase-contants";
 
 
 interface IUserBackgroundPhotoProps {
-    isUserState?: User
+    isUserState?: User | null | undefined
 }
 
 
