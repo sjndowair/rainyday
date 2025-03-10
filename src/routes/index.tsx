@@ -1,4 +1,4 @@
-import { HashRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Home from "../pages/home";
 import LoginPage from "../pages/login";
 import ProfilePage from "../pages/profile";
@@ -8,17 +8,14 @@ import MainPage from "../pages/chat";
 
 function App() {
   return (
-    <HashRouter>
-      <Routes>
-        <Route path={""} element={<Home />} />
-        <Route path={"/membership"} element={<Membership />} />
-        <Route path={"/mypage"} element={<MyPage />} />
-        <Route path={"/chat"} element={<MainPage />} />
-        <Route path={"/profile"} element={<ProfilePage />} />
-        <Route path={"/profile/:userId"} element={<ProfilePage />} />
-        <Route path={"/login"} element={<LoginPage />} />
-      </Routes>
-    </HashRouter>
+    <Routes>
+      <Route path={""} element={<Home />} />
+      <Route path={"/membership"} element={<Membership />} />
+      <Route path={"/mypage"} element={<MyPage />} />
+      <Route path={"/chat"} element={<MainPage />} />
+      <Route path={"/profile"} element={<ProfilePage />} />
+      <Route path={"/login"} element={<LoginPage />} />
+    </Routes>
   );
 }
 

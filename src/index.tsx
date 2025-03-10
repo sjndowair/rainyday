@@ -4,7 +4,7 @@ import reportWebVitals from "./reportWebVitals";
 import React from "react";
 import "tailwindcss/tailwind.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 
 const QueryProvider = new QueryClient();
 
@@ -14,9 +14,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <QueryClientProvider client={QueryProvider}>
     <React.StrictMode>
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <HashRouter>
         <App />
-      </BrowserRouter>
+      </HashRouter>
     </React.StrictMode>
   </QueryClientProvider>
 );
