@@ -1,4 +1,4 @@
-import { POST_DUMMY_DATA } from "../../../dummy/dummy-data";
+import { POST_DUMMY_DATA } from "../../../dummy/index";
 
 const SkeletonPost = () => {
   return (

@@ -1,30 +1,28 @@
+import { useThemeStore } from "../../store";
 
-import {useState} from "react";
-import {useThemeStore} from "../../store";
-
-interface IChartButtonProps {
-    value?: string;
-    type?: string;
-    key?: string | number;
-    isActiveChart?: string | [];
-    onClickActiveChart?: (e: string) => void;
-    setIsActiveChart?: any;
+interface Props {
+  onClick: () => void;
+  active?: boolean;
+  children: React.ReactNode;
 }
 
-const CHART_DATA = ["candlestick", "line", "donut"]
+export default function ChartButton({ onClick, active, children }: Props) {
+  const { isDarkMode } = useThemeStore();
 
-const ChartButton = ({value ,type ,setIsActiveChart, isActiveChart}: IChartButtonProps) =>  {
-
-    const {isDarkMode} = useThemeStore();
-
-    return (
-        <>
-                <button onClick={() => setIsActiveChart(type)} className={`px-3 py-3 rounded ${isDarkMode ?  'bg-blue-600' : "text-white font-semibold  bg-purple-500"} bg-opacity-70 hover:bg-opacity-90`}>
-                    {type?.charAt(0).toUpperCase() + type!.slice(1)}
-                </button>
-        </>
-    )
-
+  return (
+    <button
+      onClick={onClick}
+      className={`px-4 py-2 rounded-lg transition-colors ${
+        active
+          ? isDarkMode
+            ? "bg-blue-500 text-white"
+            : "bg-purple-500 text-white"
+          : isDarkMode
+          ? "bg-gray-700 hover:bg-gray-600 text-gray-200"
+          : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+      }`}
+    >
+      {children}
+    </button>
+  );
 }
-
-export default ChartButton

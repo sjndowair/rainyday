@@ -1,5 +1,6 @@
 import { InputHTMLAttributes } from "react";
 import { ILabelProps } from "./create-membership";
+import { User } from "firebase/auth";
 
 export interface IMainHomeStoryProps {
   id: number;
@@ -24,4 +25,5 @@ export interface IRadioBoxProps
 
 export interface ILoadingProps {
   isLoading?: boolean;
+  isUser?: User | null;
 }

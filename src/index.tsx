@@ -4,6 +4,7 @@ import reportWebVitals from "./reportWebVitals";
 import React from "react";
 import "tailwindcss/tailwind.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { BrowserRouter } from "react-router-dom";
 
 const QueryProvider = new QueryClient();
 
@@ -13,12 +14,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <QueryClientProvider client={QueryProvider}>
     <React.StrictMode>
-      <App />
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <App />
+      </BrowserRouter>
     </React.StrictMode>
   </QueryClientProvider>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

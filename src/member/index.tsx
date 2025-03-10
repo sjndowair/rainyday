@@ -1,18 +1,32 @@
-import {ILayOutProps} from "../types/create-membership";
+import { ILayOutProps } from "../types/create-membership";
 import Membership from "../pages/membership";
-import {auth} from "../constants/firebase-contants";
-import Layout from "../layout";
+import { auth } from "../constants/firebase-contants";
+import Loading from "../loading/spinner";
+import { useState, useEffect } from "react";
+import { useThemeStore } from "../store";
 
+const Member = ({ children }: ILayOutProps) => {
+  const [authChecked, setAuthChecked] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setIsAuthenticated(!!user);
+      setAuthChecked(true);
+    });
 
-const Member =({children}:ILayOutProps) => {
+    return () => unsubscribe();
+  }, []);
 
-const isCheckJoin = auth.currentUser
+  if (!authChecked) {
+    return <Loading />;
+  }
 
-    if(!isCheckJoin)  return <Membership />
+  if (!isAuthenticated) {
+    return <Membership />;
+  }
 
-
-    return children;
-}
+  return children;
+};
 
 export default Member;

@@ -1,4 +1,4 @@
-import { STORY_DUMMY_DATA } from "../../../dummy/dummy-data";
+import { STORY_DUMMY_DATA } from "../../../dummy/index";
 
 const SkeletonStoryBox = () => {
   return (

@@ -12,6 +12,7 @@
     "@types/node": "^16.18.114",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",
+    "date-fns": "^4.1.0",
     "dotenv": "^16.4.5",
     "firebase": "^11.0.2",
     "genkit": "^0.9.12",
@@ -30,8 +31,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
+  "proxy": "https://api.upbit.com",
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -54,5 +58,6 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "eslint": "^8.57.1",
     "tailwindcss": "^3.4.14"
-  }
+  },
+  "homepage": "https://rainyday.github.io/sjndowair"
 }

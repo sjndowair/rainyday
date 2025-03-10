@@ -43,7 +43,8 @@ const PostBox = ({onClick, onSubmit, onChange, onKeyDown, setIsOpenMessageBox, s
                     <button
                         onKeyDown={(e: React.KeyboardEvent<HTMLButtonElement>) => onKeyDown?.(e)}
                         onClick={(e: React.MouseEvent<HTMLButtonElement>) => onClick?.(e)}
-                        className={`h-[2.5rem] bg-purple-500 text-white rounded-md p-2`} type={"button"}>저장
+                        className={`h-[2.5rem] bg-purple-500 text-white rounded-md p-2`}
+                        type={"button"}>저장
                     </button>
                     <button
                         onClick={() => onClickDirection?.()}

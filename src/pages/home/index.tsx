@@ -1,100 +1,391 @@
-
-import { useState } from 'react'
+import { useState } from "react";
 import Layout from "../../layout";
 import {
-    ResponsiveContainer, XAxis, YAxis, Tooltip,
-    LineChart, Line, CartesianGrid, Legend,
-    PieChart, Pie, Cell
-} from 'recharts'
-import { Cloud, Droplet } from 'lucide-react'
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Tooltip,
+  LineChart,
+  Line,
+  CartesianGrid,
+  Legend,
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+} from "recharts";
 import Theme from "../../components/theme";
-import {donutData, lineData} from "../../dummy/dummy-data";
-import { useThemeStore} from "../../store";
 import ChartButton from "../../atoms/chartButton";
+import { useQuery } from "@tanstack/react-query";
+import {
+  getUpbitMarkets,
+  getUpbitCandlesUrl,
+} from "../../constants/api.contants";
+import ChartSearchArea from "../../components/chartSearchArea";
+import ChartTable from "../../components/chartTable";
 
-
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
-const CHART_TYPE = ["candleStick", "line", "donut" ]
+type TPeriodType = "1D" | "1W" | "1M" | "6M" | "1Y";
 
 export default function Home() {
-    const [isActiveChart, setIsActiveChart] = useState<string>('candleStick')
+  const [openMarkets, setOpenMarkets] = useState({
+    krw: false,
+    btc: false,
+    usdt: false,
+    eth: false,
+  });
 
-    const {isDarkMode} =  useThemeStore()
+  const [chartType, setChartType] = useState<"line" | "bar" | "area">("line");
+  const [period, setPeriod] = useState<TPeriodType>("1Y");
+  const [selectedMarket, setSelectedMarket] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
+  const [visiblePrices, setVisiblePrices] = useState({
+    trade: true, // 종가
+    opening: true, // 시가
+    high: true, // 고가
+    low: true, // 저가
+  });
 
-    return (
-        <Layout>
-        <Theme>
-            <div className={`pt-[5rem]`}  ></div>
+  const {
+    data: marketData,
+    error: marketError,
+    isLoading: isMarketLoading,
+  } = useQuery({
+    queryKey: ["upbitMarkets"],
+    queryFn: () => getUpbitMarkets(),
+  });
 
-                <div id="rain-container" className=" fixed inset-0 pointer-events-none" ></div>
-                <div className={`max-w-4xl mx-auto ${isDarkMode ? " bg-gray-800 bg-opacity-50 " : ""} backdrop-filter backdrop-blur-lg rounded-lg shadow-2xl p-6 `}>
-                    <div className="flex items-center justify-between mb-6 ">
-                        <h1 className="text-2xl font-bold flex items-center ">
-                            <Cloud className="mr-2" />
-                            Rainy Day Stocks
-                        </h1>
+  // const { isDarkMode } = useThemeStore();
 
-                        <div className="flex space-x-2">
-                            {CHART_TYPE.map((type, key) => (
-                                <ChartButton key={key} type={type} isActiveChart={isActiveChart} setIsActiveChart={setIsActiveChart} />
-                            ))}
-                        </div>
-                    </div>
+  const { data: candleData, isLoading: isCandleLoading } = useQuery({
+    queryKey: ["upbitCandles", selectedMarket, period],
+    queryFn: async () => {
+      if (!selectedMarket) return null;
+      const url = getUpbitCandlesUrl(selectedMarket, period);
+      const response = await fetch(url);
+      const data = await response.json();
 
-                    <div className="h-[400px]">
+      return data.sort(
+        (a: any, b: any) =>
+          new Date(a.candle_date_time_utc).getTime() -
+          new Date(b.candle_date_time_utc).getTime()
+      );
+    },
+    enabled: !!selectedMarket,
+  });
 
-                        {isActiveChart === 'line' && (
-                            <ResponsiveContainer width="100%" height="100%">
-                                <LineChart data={lineData}>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                                    <XAxis dataKey="date" stroke="white" />
-                                    <YAxis stroke="white" />
-                                    <Tooltip
-                                        contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', border: 'none' }}
-                                        labelStyle={{ color: 'white' }}
-                                    />
-                                    <Legend />
-                                    <Line type="monotone" dataKey="value" stroke="#7E22CE" strokeWidth={2} />
-                                </LineChart>
-                            </ResponsiveContainer>
+  const handleMarketClick = (market: string) => {
+    setSelectedMarket(market);
+  };
 
-                        )}
+  const formatDate = (dateString: string, periodType: TPeriodType) => {
+    if (periodType === "1D") {
+      return dateString.slice(11, 16);
+    }
+    return dateString.slice(0, 10);
+  };
 
-                        {isActiveChart === 'donut' && (
-                            <ResponsiveContainer width="100%" height="100%">
-                                <PieChart>
-                                    <Pie
-                                        data={donutData}
-                                        cx="50%"
-                                        cy="50%"
-                                        innerRadius={60}
-                                        outerRadius={80}
-                                        fill="#8884d8"
-                                        paddingAngle={5}
-                                        dataKey="value"
-                                    >
-                                        {donutData.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                        ))}
-                                    </Pie>
-                                    <Tooltip
-                                        contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', border: 'none' }}
-                                        labelStyle={{ color: 'white' }}
-                                    />
-                                    <Legend />
-                                </PieChart>
-                            </ResponsiveContainer>
-                        )}
-                    </div>
-                    <div className={`mt-6 ${isDarkMode ? 'bg-blue-900 bg-opacity-30' : 'bg-purple-900 bg-opacity-30'} rounded-lg p-4 flex items-center justify-between`}>
-                        <div className="flex items-center">
-                            <Droplet className="h-6 w-6 mr-2 text-blue-300" />
-                            <span className="text-lg font-semibold">Market Mood: Rainy with a chance of profits</span>
-                        </div>
-                        <div className="text-sm">Last updated: {new Date().toLocaleString()}</div>
-                    </div>
+  const filterMarkets = (markets: any[], prefix: string) => {
+    if (!markets) return [];
+    return markets
+      .filter((item) => item.market.startsWith(prefix))
+      .filter(
+        (item) =>
+          item.market.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.korean_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.english_name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+  };
+
+  const togglePriceVisibility = (priceType: keyof typeof visiblePrices) => {
+    setVisiblePrices((prev) => ({
+      ...prev,
+      [priceType]: !prev[priceType],
+    }));
+  };
+
+  if (isMarketLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (marketError) {
+    return <div>Error: {marketError.message}</div>;
+  }
+
+  return (
+    <Layout>
+      <Theme>
+        <div className="flex  ">
+          <ChartSearchArea
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            openMarkets={openMarkets}
+            setOpenMarkets={setOpenMarkets}
+            marketData={marketData}
+            selectedMarket={selectedMarket}
+            handleMarketClick={handleMarketClick}
+            filterMarkets={filterMarkets}
+          />
+
+          {selectedMarket && (
+            <div className="flex-1  p-4">
+              <h2 className="mt-[2rem] text-xl font-bold">{selectedMarket}</h2>
+              <div className="flex md:flex-row flex-col w-full gap-4 md:items-center justify-between items-start mb-10 mt-[3rem]">
+                <div className="flex gap-4 pr-3">
+                  <ChartButton
+                    onClick={() => setPeriod("1D")}
+                    active={period === "1D"}
+                  >
+                    1일
+                  </ChartButton>
+                  <ChartButton
+                    onClick={() => setPeriod("1W")}
+                    active={period === "1W"}
+                  >
+                    1주
+                  </ChartButton>
+                  <ChartButton
+                    onClick={() => setPeriod("1M")}
+                    active={period === "1M"}
+                  >
+                    1개월
+                  </ChartButton>
+                  <ChartButton
+                    onClick={() => setPeriod("6M")}
+                    active={period === "6M"}
+                  >
+                    6개월
+                  </ChartButton>
+                  <ChartButton
+                    onClick={() => setPeriod("1Y")}
+                    active={period === "1Y"}
+                  >
+                    1년
+                  </ChartButton>
                 </div>
-        </Theme>
+                <div className="flex gap-2">
+                  <ChartButton
+                    onClick={() => setChartType("line")}
+                    active={chartType === "line"}
+                  >
+                    라인
+                  </ChartButton>
+                  <ChartButton
+                    onClick={() => setChartType("bar")}
+                    active={chartType === "bar"}
+                  >
+                    바
+                  </ChartButton>
+                  <ChartButton
+                    onClick={() => setChartType("area")}
+                    active={chartType === "area"}
+                  >
+                    영역
+                  </ChartButton>
+                </div>
+              </div>
+
+              <div className="flex gap-2 mb-4">
+                <ChartButton
+                  onClick={() => togglePriceVisibility("trade")}
+                  active={visiblePrices.trade}
+                >
+                  종가
+                </ChartButton>
+                <ChartButton
+                  onClick={() => togglePriceVisibility("opening")}
+                  active={visiblePrices.opening}
+                >
+                  시가
+                </ChartButton>
+                <ChartButton
+                  onClick={() => togglePriceVisibility("high")}
+                  active={visiblePrices.high}
+                >
+                  고가
+                </ChartButton>
+                <ChartButton
+                  onClick={() => togglePriceVisibility("low")}
+                  active={visiblePrices.low}
+                >
+                  저가
+                </ChartButton>
+              </div>
+
+              {isCandleLoading ? (
+                <div>로딩중...</div>
+              ) : (
+                <>
+                  <div className="h-[400px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      {chartType === "line" ? (
+                        <LineChart data={candleData}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis
+                            dataKey={
+                              period === "1D"
+                                ? "candle_date_time_kst"
+                                : "candle_date_time_utc"
+                            }
+                            tickFormatter={(time) => formatDate(time, period)}
+                          />
+                          <YAxis domain={["auto", "auto"]} />
+                          <Tooltip
+                            labelFormatter={(label) =>
+                              formatDate(label, period)
+                            }
+                          />
+                          <Legend />
+                          {visiblePrices.trade && (
+                            <Line
+                              type="monotone"
+                              dataKey="trade_price"
+                              stroke="#8884d8"
+                              name="종가"
+                            />
+                          )}
+                          {visiblePrices.opening && (
+                            <Line
+                              type="monotone"
+                              dataKey="opening_price"
+                              stroke="#82ca9d"
+                              name="시가"
+                            />
+                          )}
+                          {visiblePrices.high && (
+                            <Line
+                              type="monotone"
+                              dataKey="high_price"
+                              stroke="#ff7300"
+                              name="고가"
+                            />
+                          )}
+                          {visiblePrices.low && (
+                            <Line
+                              type="monotone"
+                              dataKey="low_price"
+                              stroke="#ff0000"
+                              name="저가"
+                            />
+                          )}
+                        </LineChart>
+                      ) : chartType === "bar" ? (
+                        <BarChart data={candleData}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis
+                            dataKey={
+                              period === "1D"
+                                ? "candle_date_time_kst"
+                                : "candle_date_time_utc"
+                            }
+                            tickFormatter={(time) => formatDate(time, period)}
+                          />
+                          <YAxis domain={["auto", "auto"]} />
+                          <Tooltip
+                            labelFormatter={(label) =>
+                              formatDate(label, period)
+                            }
+                          />
+                          <Legend />
+                          {visiblePrices.trade && (
+                            <Bar
+                              dataKey="trade_price"
+                              fill="#8884d8"
+                              name="종가"
+                            />
+                          )}
+                          {visiblePrices.opening && (
+                            <Bar
+                              dataKey="opening_price"
+                              fill="#82ca9d"
+                              name="시가"
+                            />
+                          )}
+                          {visiblePrices.high && (
+                            <Bar
+                              dataKey="high_price"
+                              fill="#ff7300"
+                              name="고가"
+                            />
+                          )}
+                          {visiblePrices.low && (
+                            <Bar
+                              dataKey="low_price"
+                              fill="#ff0000"
+                              name="저가"
+                            />
+                          )}
+                        </BarChart>
+                      ) : (
+                        <AreaChart data={candleData}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis
+                            dataKey={
+                              period === "1D"
+                                ? "candle_date_time_kst"
+                                : "candle_date_time_utc"
+                            }
+                            tickFormatter={(time) => formatDate(time, period)}
+                          />
+                          <YAxis domain={["auto", "auto"]} />
+                          <Tooltip
+                            labelFormatter={(label) =>
+                              formatDate(label, period)
+                            }
+                          />
+                          <Legend />
+                          {visiblePrices.trade && (
+                            <Area
+                              type="monotone"
+                              dataKey="trade_price"
+                              stroke="#8884d8"
+                              fill="#8884d8"
+                              fillOpacity={0.3}
+                              name="종가"
+                            />
+                          )}
+                          {visiblePrices.opening && (
+                            <Area
+                              type="monotone"
+                              dataKey="opening_price"
+                              stroke="#82ca9d"
+                              fill="#82ca9d"
+                              fillOpacity={0.3}
+                              name="시가"
+                            />
+                          )}
+                          {visiblePrices.high && (
+                            <Area
+                              type="monotone"
+                              dataKey="high_price"
+                              stroke="#ff7300"
+                              fill="#ff7300"
+                              fillOpacity={0.3}
+                              name="고가"
+                            />
+                          )}
+                          {visiblePrices.low && (
+                            <Area
+                              type="monotone"
+                              dataKey="low_price"
+                              stroke="#ff0000"
+                              fill="#ff0000"
+                              fillOpacity={0.3}
+                              name="저가"
+                            />
+                          )}
+                        </AreaChart>
+                      )}
+                    </ResponsiveContainer>
+                  </div>
+
+                  <ChartTable candleData={candleData} />
+                </>
+              )}
+            </div>
+          )}
+        </div>
+      </Theme>
     </Layout>
-)}
+  );
+}

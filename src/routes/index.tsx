@@ -12,9 +12,10 @@ function App() {
       <Routes>
         <Route path={""} element={<Home />} />
         <Route path={"/membership"} element={<Membership />} />
-        <Route path={"/mypage"} element={<MyPage  />} />
+        <Route path={"/mypage"} element={<MyPage />} />
         <Route path={"/chat"} element={<MainPage />} />
         <Route path={"/profile"} element={<ProfilePage />} />
+        <Route path={"/profile/:userId"} element={<ProfilePage />} />
         <Route path={"/login"} element={<LoginPage />} />
       </Routes>
     </HashRouter>
