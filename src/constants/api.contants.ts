@@ -3,11 +3,11 @@ export const API_BASE_URL = process.env.REACT_APP_BASE_API_URL_KEY;
 export const BASE_URL = "https://api.openweathermap.org";
 
 // API URL 환경 설정
-const CORS_PROXY = "https://jsonp.afeld.me/?url="; // JSONP 프록시로 변경
+const CORS_PROXY = "https://api.allorigins.win/get?url="; // 다른 CORS 프록시로 변경
 
 const BASE_API_URL =
   process.env.NODE_ENV === "production"
-    ? `${CORS_PROXY}${encodeURIComponent("https://api.upbit.com")}` // URL 인코딩 사용
+    ? `${CORS_PROXY}${encodeURIComponent("https://api.upbit.com")}`
     : "/api/upbit";
 
 export const REQUEST_INIT_OBJECT: RequestInit = {
@@ -29,27 +29,19 @@ export const getUpbitMarkets = async (details = true) => {
 
   try {
     console.log("Requesting URL:", url);
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
-
-    console.log("Response:", {
-      status: response.status,
-      statusText: response.statusText,
-      headers: Object.fromEntries(response.headers.entries()),
-    });
+    const response = await fetch(url);
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Error response:", errorText);
       throw new Error(`HTTP Error: ${response.status}`);
     }
 
-    const data = await response.json();
+    const result = await response.json();
+    // allorigins는 응답을 contents 필드에 담아서 반환
+    const data =
+      process.env.NODE_ENV === "production"
+        ? JSON.parse(result.contents)
+        : result;
+
     console.log("Success response:", data);
     return data || [];
   } catch (error) {
@@ -62,13 +54,6 @@ export const getUpbitMarkets = async (details = true) => {
 };
 
 export const getUpbitCandlesUrl = (market: string, period: TPeriodType) => {
-  const baseUrl =
-    process.env.NODE_ENV === "production"
-      ? `${CORS_PROXY}${encodeURIComponent(
-          `https://api.upbit.com/v1/candles/`
-        )}`
-      : "/api/upbit";
-
   const endpoint = (() => {
     switch (period) {
       case "1D":
@@ -86,9 +71,9 @@ export const getUpbitCandlesUrl = (market: string, period: TPeriodType) => {
     }
   })();
 
+  const apiUrl = `https://api.upbit.com/v1/candles/${endpoint}`;
+
   return process.env.NODE_ENV === "production"
-    ? `${CORS_PROXY}${encodeURIComponent(
-        `https://api.upbit.com/v1/candles/${endpoint}`
-      )}`
-    : `${baseUrl}/v1/candles/${endpoint}`;
+    ? `${CORS_PROXY}${encodeURIComponent(apiUrl)}`
+    : `/api/upbit/v1/candles/${endpoint}`;
 };
