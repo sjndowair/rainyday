@@ -3,10 +3,11 @@ export const API_BASE_URL = process.env.REACT_APP_BASE_API_URL_KEY;
 export const BASE_URL = "https://api.openweathermap.org";
 
 // API URL 환경 설정
-const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
+const CORS_PROXY = "https://api.allorigins.win/raw?url="; // 다른 CORS 프록시 서비스로 변경
+
 const BASE_API_URL =
   process.env.NODE_ENV === "production"
-    ? `${CORS_PROXY}https://api.upbit.com` // 프로덕션 환경에서 CORS 프록시 사용
+    ? `${CORS_PROXY}${encodeURIComponent("https://api.upbit.com")}` // URL 인코딩 추가
     : "/api/upbit"; // 개발 환경
 
 export const REQUEST_INIT_OBJECT: RequestInit = {
