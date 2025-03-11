@@ -35,7 +35,15 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "proxy": "https://api.upbit.com",
+  "proxy": {
+    "/api": {
+      "target": "https://api.upbit.com",
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/api": ""
+      }
+    }
+  },
   "eslintConfig": {
     "extends": [
       "react-app",

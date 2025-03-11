@@ -15,7 +15,7 @@ import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: "sjndowair.github.io",
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN_KEY,
   projectId: process.env.REACT_APP_PROJECT_ID_KEY,
   messagingSenderId: process.env.REACT_APP_MESSAGE_SENDER_ID_KEY,
   appId: process.env.REACT_APP_APP_ID_KEY,
