@@ -12,29 +12,54 @@ export const REQUEST_INIT_OBJECT: RequestInit = {
 type TPeriodType = "1D" | "1W" | "1M" | "6M" | "1Y";
 
 export const getUpbitMarkets = async (details = true) => {
-  const url = `https://api.upbit.com/v1/market/all?isDetails=${details}`;
+  const url = `/api/upbit/v1/market/all?isDetails=${details}`;
   try {
-    const response = await fetch(url);
+    console.log("Requesting URL:", url);
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("Response:", {
+      status: response.status,
+      statusText: response.statusText,
+      headers: Object.fromEntries(response.headers.entries()),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Error response:", errorText);
+      throw new Error(`HTTP Error: ${response.status}`);
+    }
+
     const data = await response.json();
-    return data;
+    console.log("Success response:", data);
+    return data || [];
   } catch (error) {
-    console.error(error);
+    console.error("Fetch error:", error);
+    return [
+      { market: "KRW-BTC", korean_name: "비트코인", english_name: "Bitcoin" },
+      { market: "KRW-ETH", korean_name: "이더리움", english_name: "Ethereum" },
+    ];
   }
 };
 
 export const getUpbitCandlesUrl = (market: string, period: TPeriodType) => {
   switch (period) {
     case "1D":
-      return `https://api.upbit.com/v1/candles/minutes/60?market=${market}&count=24`;
+      return `/api/upbit/v1/candles/minutes/60?market=${market}&count=24`;
     case "1W":
-      return `https://api.upbit.com/v1/candles/days?market=${market}&count=7`;
+      return `/api/upbit/v1/candles/days?market=${market}&count=7`;
     case "1M":
-      return `https://api.upbit.com/v1/candles/days?market=${market}&count=30`;
+      return `/api/upbit/v1/candles/days?market=${market}&count=30`;
     case "6M":
-      return `https://api.upbit.com/v1/candles/days?market=${market}&count=180`;
+      return `/api/upbit/v1/candles/days?market=${market}&count=180`;
     case "1Y":
-      return `https://api.upbit.com/v1/candles/days?market=${market}&count=365`;
+      return `/api/upbit/v1/candles/days?market=${market}&count=365`;
     default:
-      return `https://api.upbit.com/v1/candles/minutes/60?market=${market}&count=24`;
+      return `/api/upbit/v1/candles/minutes/60?market=${market}&count=24`;
   }
 };
