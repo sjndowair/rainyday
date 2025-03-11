@@ -1,6 +1,11 @@
 export const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 export const API_BASE_URL = process.env.REACT_APP_BASE_API_URL_KEY;
-export const BASE_URL = "https://api.openweathermap.org";
+
+// API URL 환경 설정
+const BASE_API_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://api.upbit.com" // 프로덕션 환경
+    : "/api/upbit"; // 개발 환경
 
 export const REQUEST_INIT_OBJECT: RequestInit = {
   method: "GET",
@@ -12,7 +17,11 @@ export const REQUEST_INIT_OBJECT: RequestInit = {
 type TPeriodType = "1D" | "1W" | "1M" | "6M" | "1Y";
 
 export const getUpbitMarkets = async (details = true) => {
-  const url = `/api/upbit/v1/market/all?isDetails=${details}`;
+  const url =
+    process.env.NODE_ENV === "production"
+      ? `${BASE_API_URL}/v1/market/all?isDetails=${details}`
+      : `/api/upbit/v1/market/all?isDetails=${details}`;
+
   try {
     console.log("Requesting URL:", url);
     const response = await fetch(url, {
@@ -48,18 +57,21 @@ export const getUpbitMarkets = async (details = true) => {
 };
 
 export const getUpbitCandlesUrl = (market: string, period: TPeriodType) => {
+  const baseUrl =
+    process.env.NODE_ENV === "production" ? BASE_API_URL : "/api/upbit";
+
   switch (period) {
     case "1D":
-      return `/api/upbit/v1/candles/minutes/60?market=${market}&count=24`;
+      return `${baseUrl}/v1/candles/minutes/60?market=${market}&count=24`;
     case "1W":
-      return `/api/upbit/v1/candles/days?market=${market}&count=7`;
+      return `${baseUrl}/v1/candles/days?market=${market}&count=7`;
     case "1M":
-      return `/api/upbit/v1/candles/days?market=${market}&count=30`;
+      return `${baseUrl}/v1/candles/days?market=${market}&count=30`;
     case "6M":
-      return `/api/upbit/v1/candles/days?market=${market}&count=180`;
+      return `${baseUrl}/v1/candles/days?market=${market}&count=180`;
     case "1Y":
-      return `/api/upbit/v1/candles/days?market=${market}&count=365`;
+      return `${baseUrl}/v1/candles/days?market=${market}&count=365`;
     default:
-      return `/api/upbit/v1/candles/minutes/60?market=${market}&count=24`;
+      return `${baseUrl}/v1/candles/minutes/60?market=${market}&count=24`;
   }
 };
