@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/rainyday/static/css/main.775c677b.css",
-    "main.js": "/rainyday/static/js/main.bd3c9ef2.js",
+    "main.js": "/rainyday/static/js/main.ee50b423.js",
     "static/js/453.5ae6d263.chunk.js": "/rainyday/static/js/453.5ae6d263.chunk.js",
     "index.html": "/rainyday/index.html",
     "main.775c677b.css.map": "/rainyday/static/css/main.775c677b.css.map",
-    "main.bd3c9ef2.js.map": "/rainyday/static/js/main.bd3c9ef2.js.map",
+    "main.ee50b423.js.map": "/rainyday/static/js/main.ee50b423.js.map",
     "453.5ae6d263.chunk.js.map": "/rainyday/static/js/453.5ae6d263.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.775c677b.css",
-    "static/js/main.bd3c9ef2.js"
+    "static/js/main.ee50b423.js"
   ]
 }
