@@ -15,13 +15,14 @@ module.exports = function (app) {
   );
 
   app.use(
-    ["/api/upbit", "/rainyday/api/upbit"],
+    ["/api/upbit", "/rainyday/api/upbit", "/sjndowair.github.io/api/upbit"],
     createProxyMiddleware({
       target: "https://api.upbit.com",
       changeOrigin: true,
       pathRewrite: {
         "^/api/upbit": "",
         "^/rainyday/api/upbit": "",
+        "^/sjndowair.github.io/api/upbit": "",
       },
     })
   );
